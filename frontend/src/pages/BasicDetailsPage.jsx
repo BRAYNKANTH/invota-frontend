@@ -43,7 +43,7 @@ const BasicDetailsPage = () => {
   try {
     // Sending the updated details, including emergencyContactEmail, to the backend
     const response = await axios.put(
-      'https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api/update-basic-details',
+      'https://invota-backend-production.up.railway.app/api/auth/update-basic-details',
       {
         fullName,
         address,

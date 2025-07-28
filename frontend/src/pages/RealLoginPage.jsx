@@ -27,7 +27,7 @@ const RealLoginPage = () => {
     }
 
     try {
-      const response = await axios.post('https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api/login', {
+      const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/login', {
         usernameOrEmail,
         password,
       });
