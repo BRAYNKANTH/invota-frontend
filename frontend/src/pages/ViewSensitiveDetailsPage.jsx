@@ -29,7 +29,7 @@ const ViewSensitiveDetailsPage = () => {
       console.log('Fetching sensitive details for logged-in user');  // Debug log
 
       try {
-        const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth /get-sensitive-details', {
+        const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details', {
           headers: { Authorization: `Bearer ${token}` },  // Send token for authorized requests
         });
         setSensitiveDetails(response.data);
