@@ -9,13 +9,14 @@ const VerifyAccessPage = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const verifyToken = async () => {
       try {
         const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/verify-access', { token }); // Make sure the URL is correct
         if (response.status === 200) {
-          setMessage('Access granted. Redirecting...');
-          setTimeout(() => navigate('/view-sensitive-details'), 2000);
+          setMessage('Access granted. You can now close this window. The requester may now access sensitive details.');
+          
         }
       } catch (error) {
         console.error('Error verifying token:', error);

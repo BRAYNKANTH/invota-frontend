@@ -24,6 +24,8 @@ function App() {
         <Route path="/temp-login" element={<TempLoginPage />} />
         <Route path="/login" element={<RealLoginPage />} />
         <Route path="/account-update" element={<AccountUpdatePage />} />
+        <Route path="/request-access/:userId" element={<RequestEmergencyAccessPage />} />
+
         <Route path="/verify-email/:token" element={<EmailVerificationPage />} />
         <Route path="/verified" element={<VerifiedPage />} />
         <Route path="/check-email" element={<CheckEmail />} />
