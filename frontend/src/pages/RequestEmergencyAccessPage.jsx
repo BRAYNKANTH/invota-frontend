@@ -7,8 +7,6 @@ const RequestEmergencyAccessPage = () => {
   const [error, setError] = useState('');
   const [checking, setChecking] = useState(false);
   const navigate = useNavigate();
-
-  // Get userId from location.state
   const location = useLocation();
   const { userId } = location.state || {};
 
@@ -24,9 +22,7 @@ const RequestEmergencyAccessPage = () => {
     console.log('Sending request with userId:', userId); // Debug log
 
     try {
-      const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/request-emergency-access', {
-        userId,
-      });
+      const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/request-emergency-access', { userId });
 
       if (response.status === 200) {
         setAccessStatus('Access request sent to the emergency contact. They will receive a link to verify access.');
@@ -44,12 +40,10 @@ const RequestEmergencyAccessPage = () => {
 
     const interval = setInterval(async () => {
       try {
-        const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/check-access', {
-          userId,
-        });
+        const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/check-access', { userId });
 
         if (response.status === 200 && response.data.accessGranted) {
-          clearInterval(interval);
+          clearInterval(interval);  // Stop checking once access is granted
           setAccessStatus('Access granted! Redirecting...');
           setTimeout(() => navigate(`/view-sensitive-details/${userId}`), 2000);
         }
