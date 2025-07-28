@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an axios instance for making HTTP requests to the backend
 const api = axios.create({
-  baseURL: 'https://invota-backend-production.up.railway.app/api',  // Set your backend URL here
+  baseURL: 'https://invota-backend-production.up.railway.app',  // Set your backend URL here
   timeout: 10000,  // Optional: timeout if the request takes too long
 });
 
