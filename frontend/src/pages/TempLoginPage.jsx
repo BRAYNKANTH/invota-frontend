@@ -11,7 +11,7 @@ const TempLoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/temp-login', { username, password });
+      const response = await axios.post('https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api/temp-login', { username, password });
       localStorage.setItem('token', response.data.token); // Store JWT token in localStorage
       navigate('/account-update'); // Redirect to the account update page
     } catch (error) {

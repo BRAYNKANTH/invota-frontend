@@ -15,7 +15,7 @@ const ViewBasicDetailsPage = () => {
   const fetchPublicDetails = useCallback(async (userId) => {
     console.log('Fetching public details for userId:', userId); // Debug log for API request
     try {
-      const response = await axios.get(`http://localhost:5000/api/get-public-details/${userId}`, {
+      const response = await axios.get(`https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api/get-public-details/${userId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},  // Send token if available
       });
       setPublicDetails(response.data.publicDetails);

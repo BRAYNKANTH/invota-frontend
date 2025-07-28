@@ -13,7 +13,7 @@ const AccountUpdatePage = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put('http://localhost:5000/api/update-account', { email, username, password }, {
+      await axios.put('https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api/update-account', { email, username, password }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       navigate('/basic-details');

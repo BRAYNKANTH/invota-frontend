@@ -12,7 +12,7 @@ const VerifyAccessPage = () => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/api/verify-access', { token }); // Make sure the URL is correct
+        const response = await axios.post('https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api/verify-access', { token }); // Make sure the URL is correct
         if (response.status === 200) {
           setMessage('Access granted. Redirecting...');
           setTimeout(() => navigate('/view-sensitive-details'), 2000);

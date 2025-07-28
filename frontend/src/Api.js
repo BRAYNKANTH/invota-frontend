@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an axios instance for making HTTP requests to the backend
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',  // Set your backend URL here
+  baseURL: 'https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api',  // Set your backend URL here
   timeout: 10000,  // Optional: timeout if the request takes too long
 });
 

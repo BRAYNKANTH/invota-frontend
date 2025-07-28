@@ -44,7 +44,7 @@ const SensitiveDetailsPage = () => {
 
     try {
       const response = await axios.put(
-        'http://localhost:5000/api/update-sensitive-details', 
+        'https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api/update-sensitive-details', 
         {
           allergies,
           diseases,

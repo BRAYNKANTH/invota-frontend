@@ -10,7 +10,7 @@ const EmailVerificationPage = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/verify-email/${token}`);
+        const response = await axios.get(`https://invota-backend-hub0bnajdjgje3dr.southindia-01.azurewebsites.net/api/verify-email/${token}`);
         setMessage(response.data.message); // Message from backend (successful verification)
       } catch (error) {
         setMessage('Verification failed or token expired');
