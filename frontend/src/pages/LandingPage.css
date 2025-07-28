@@ -1,0 +1,31 @@
+/* LandingPage.css */
+
+.landing-container {
+  background: rgba(0, 0, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.landing-title {
+  color: #ffffff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.landing-description {
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.landing-button {
+  background-color: #007bff;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+}
+
+.landing-button:hover {
+  background-color: #0056b3;
+}

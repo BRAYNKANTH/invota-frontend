@@ -1,0 +1,54 @@
+/* Custom Blue Glass Effect */
+.bg-glass {
+  background: rgba(0, 0, 255, 0.1); /* Semi-transparent blue */
+  backdrop-filter: blur(10px); /* Apply blur effect for the glass theme */
+}
+
+/* Card Styling */
+.card {
+  background-color: rgba(66, 35, 204, 0.9); /* White with slight transparency */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Soft shadow for 3D effect */
+  max-width: 500px;
+  width: 100%;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #000000; /* Set the text color to black */
+}
+
+label {
+  font-size: 1rem;
+  color: #000000; /* Set the label text color to black */
+}
+
+input {
+  font-size: 1rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 10px;
+  background-color: #ffffff; /* White background for input fields */
+  color: #000000; /* Set the text color inside input fields to black */
+}
+
+button {
+  background-color: #007bff;
+  color: rgb(54, 71, 223);
+  padding: 12px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: none;
+  margin-top: 15px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}

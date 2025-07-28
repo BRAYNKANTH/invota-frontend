@@ -1,0 +1,79 @@
+/* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0faff; /* Soft light blue background */
+  color: #333333; /* Default text color is dark gray for readability */
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Roboto', sans-serif; /* Modern, clean font */
+  font-weight: 700; /* Bold headings */
+  color: #2d2d2d; /* Darker text for headings */
+}
+
+/* Ensure all text elements are dark unless explicitly changed */
+p, span, label, input, button {
+  color: #333333 !important; /* Force black color for text */
+}
+
+/* Styling for buttons */
+button {
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px; /* Rounded corners for a modern look */
+  font-size: 1rem;
+  background-color: #007bff; /* Attractive blue background */
+  color: #fff; /* White text on blue button */
+  transition: background-color 0.3s, transform 0.2s ease; /* Smooth transitions */
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue when hovered */
+  transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+button:active {
+  background-color: #004085; /* Even darker blue on click */
+  transform: translateY(0); /* Reset transform when clicked */
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff; /* White background for content */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow around the container */
+  border-radius: 8px; /* Rounded corners */
+}
+
+/* Light Blue Background for Specific Sections */
+.bg-light-blue {
+  background-color: #e0f7fa; /* Light Blue Background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  h1, h2, h3, h4 {
+    font-size: 1.25rem; /* Adjust font size on smaller screens */
+  }
+
+  button {
+    padding: 10px 20px; /* Smaller buttons on mobile */
+  }
+}
