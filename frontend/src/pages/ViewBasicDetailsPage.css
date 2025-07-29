@@ -24,7 +24,7 @@ body::before {
 }
 
 /* Glassy Effect Container */
-.login-container {
+.view-details-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +38,7 @@ body::before {
   border-radius: 15px;
   text-align: center;
   width: 80%;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
@@ -50,25 +50,20 @@ h2 {
   font-weight: bold;
 }
 
-.input-field {
+p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #fff;
+}
+
+img {
   width: 100%;
-  padding: 18px;
-  margin: 15px 0;
-  font-size: 1.2rem; /* Larger text for input fields */
-  border-radius: 8px;
-  border: 2px solid #ddd;
-  background: rgba(255, 255, 255, 0.5);
-  color: #333;
-  outline: none;
-  transition: all 0.3s ease;
+  max-width: 200px;
+  border-radius: 50%;
+  margin-top: 15px;
 }
 
-.input-field:focus {
-  border-color: #00b0f0;
-  background: rgba(255, 255, 255, 0.7);
-}
-
-.btn-login {
+.btn-primary {
   background: linear-gradient(135deg, #00b0f0, #f46ff4); /* Gradient for the button */
   color: white;
   border: none;
@@ -78,18 +73,10 @@ h2 {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-top: 20px;
 }
 
-.btn-login:hover {
+.btn-primary:hover {
   background: linear-gradient(135deg, #f46ff4, #00b0f0); /* Hover effect for the button */
-}
-
-/* Error Message Styling */
-.error-message {
-  font-size: 1.2rem;
-  color: #ff3333; /* Red for error */
-  margin-bottom: 15px;
 }
 
 /* Mobile Responsiveness */
@@ -103,12 +90,12 @@ h2 {
     font-size: 2rem; /* Smaller font size for mobile */
   }
 
-  .btn-login {
-    font-size: 1.3rem; /* Adjust button font size */
-    padding: 12px 25px; /* Adjust padding for better fit */
+  p {
+    font-size: 1rem; /* Adjust paragraph size for mobile */
   }
 
-  .error-message {
-    font-size: 1rem; /* Smaller font size for error message */
+  .btn-primary {
+    font-size: 1.3rem; /* Adjust button font size */
+    padding: 12px 25px; /* Adjust padding for better fit */
   }
 }

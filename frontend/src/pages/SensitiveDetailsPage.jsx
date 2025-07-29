@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-
+import './SensitiveDetailsPage.css';  // Custom CSS for this page
 
 const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
@@ -127,33 +127,52 @@ const SensitiveDetailsPage = () => {
   };
 
   return (
-    <div>
-      <h2>Update Sensitive Details</h2>
-      {error && <p className="text-danger">{error}</p>}  {/* Display error message if any */}
-      <form onSubmit={handleUpdate}>
-        <input
-          type="text"
-          placeholder="Allergies"
-          value={allergies}
-          onChange={(e) => setAllergies(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Diseases"
-          value={diseases}
-          onChange={(e) => setDiseases(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Medical Reports"
-          value={medicalReports}
-          onChange={(e) => setMedicalReports(e.target.value)}
-        />
-        <button type="submit">Update Sensitive Details</button>
-      </form>
+    <div className="login-container">
+      <div className="glassy-container">
+        <h2 className="text-center text-white mb-4">Update Sensitive Details</h2>
+        {error && <p className="error-message text-center text-danger">{error}</p>}
+        <form onSubmit={handleUpdate}>
+          <div className="form-group mb-3">
+            <label htmlFor="allergies" className="text-white">Allergies:</label>
+            <input
+              type="text"
+              id="allergies"
+              name="allergies"
+              className="form-control"
+              value={allergies}
+              onChange={(e) => setAllergies(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="diseases" className="text-white">Diseases:</label>
+            <input
+              type="text"
+              id="diseases"
+              name="diseases"
+              className="form-control"
+              value={diseases}
+              onChange={(e) => setDiseases(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="medicalReports" className="text-white">Medical Reports:</label>
+            <input
+              type="text"
+              id="medicalReports"
+              name="medicalReports"
+              className="form-control"
+              value={medicalReports}
+              onChange={(e) => setMedicalReports(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary w-100">Update Sensitive Details</button>
+        </form>
+      </div>
     </div>
   );
 };
 
 export default SensitiveDetailsPage;
-

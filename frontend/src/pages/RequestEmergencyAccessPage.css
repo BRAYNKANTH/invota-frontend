@@ -24,7 +24,7 @@ body::before {
 }
 
 /* Glassy Effect Container */
-.login-container {
+.access-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,25 +50,19 @@ h2 {
   font-weight: bold;
 }
 
-.input-field {
-  width: 100%;
-  padding: 18px;
-  margin: 15px 0;
-  font-size: 1.2rem; /* Larger text for input fields */
-  border-radius: 8px;
-  border: 2px solid #ddd;
-  background: rgba(255, 255, 255, 0.5);
-  color: #333;
-  outline: none;
-  transition: all 0.3s ease;
+p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #fff;
 }
 
-.input-field:focus {
-  border-color: #00b0f0;
-  background: rgba(255, 255, 255, 0.7);
+.error-message {
+  font-size: 1.2rem;
+  color: #ff3333; /* Red for error */
+  margin-bottom: 15px;
 }
 
-.btn-login {
+.btn-primary {
   background: linear-gradient(135deg, #00b0f0, #f46ff4); /* Gradient for the button */
   color: white;
   border: none;
@@ -81,15 +75,8 @@ h2 {
   margin-top: 20px;
 }
 
-.btn-login:hover {
+.btn-primary:hover {
   background: linear-gradient(135deg, #f46ff4, #00b0f0); /* Hover effect for the button */
-}
-
-/* Error Message Styling */
-.error-message {
-  font-size: 1.2rem;
-  color: #ff3333; /* Red for error */
-  margin-bottom: 15px;
 }
 
 /* Mobile Responsiveness */
@@ -103,7 +90,7 @@ h2 {
     font-size: 2rem; /* Smaller font size for mobile */
   }
 
-  .btn-login {
+  .btn-primary {
     font-size: 1.3rem; /* Adjust button font size */
     padding: 12px 25px; /* Adjust padding for better fit */
   }

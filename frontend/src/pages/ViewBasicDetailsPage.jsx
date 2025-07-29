@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import './ViewBasicDetailsPage.css'; // Custom CSS for this page
 
 const ViewBasicDetailsPage = () => {
   const [publicDetails, setPublicDetails] = useState(null);
@@ -62,31 +63,33 @@ const ViewBasicDetailsPage = () => {
   }, [token, userId, navigate, fetchPublicDetails]);
 
   const handleViewSensitiveDetails = () => {
-  if (!token) {
-    console.log('No token found, redirecting to request access page');  // Debug log
-    navigate('/request-emergency-access', { state: { userId } });
-    console.log(userId);
-  } else {
-    // For logged-in users, navigate to sensitive details page
-    console.log('User is logged in, redirecting to sensitive details page');  // Debug log
-    navigate('/view-sensitive-details');
-  }
-};
+    if (!token) {
+      console.log('No token found, redirecting to request access page');  // Debug log
+      navigate('/request-emergency-access', { state: { userId } });
+      console.log(userId);
+    } else {
+      // For logged-in users, navigate to sensitive details page
+      console.log('User is logged in, redirecting to sensitive details page');  // Debug log
+      navigate('/view-sensitive-details');
+    }
+  };
 
   if (!publicDetails) return <div>Loading...</div>;  // Show loading while data is fetched
 
   return (
-    <div>
-      <h2>Public Details</h2>
-      <p><strong>Full Name:</strong> {publicDetails.fullName}</p>
-      <p><strong>Address:</strong> {publicDetails.address}</p>
-      <p><strong>Phone Number:</strong> {publicDetails.phoneNumber}</p>
-      <p><strong>Blood Group:</strong> {publicDetails.bloodGroup}</p>
-      <img src={publicDetails.photo} alt="Profile" />
-      <div className="text-center mt-4">
-        <button onClick={handleViewSensitiveDetails} className="btn btn-primary btn-lg">
-          View Sensitive Details
-        </button>
+    <div className="view-details-container">
+      <div className="glassy-container">
+        <h2 className="text-center text-white mb-4">Public Details</h2>
+        <p><strong>Full Name:</strong> {publicDetails.fullName}</p>
+        <p><strong>Address:</strong> {publicDetails.address}</p>
+        <p><strong>Phone Number:</strong> {publicDetails.phoneNumber}</p>
+        <p><strong>Blood Group:</strong> {publicDetails.bloodGroup}</p>
+        <img src={publicDetails.photo} alt="Profile" className="img-fluid mb-3" />
+        <div className="text-center mt-4">
+          <button onClick={handleViewSensitiveDetails} className="btn btn-primary btn-lg">
+            View Sensitive Details
+          </button>
+        </div>
       </div>
     </div>
   );
