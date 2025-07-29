@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import './AccountUpdatePage.css'; // Import custom CSS
 
 const AccountUpdatePage = () => {
   const [email, setEmail] = useState('');
@@ -24,14 +24,34 @@ const AccountUpdatePage = () => {
   };
 
   return (
-    <div>
-      <h2>Update Account</h2>
-      <form onSubmit={handleUpdate}>
-        <input type="email" placeholder="New Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="text" placeholder="New Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <input type="password" placeholder="New Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Update Account</button>
-      </form>
+    <div className="login-container">
+      <div className="glassy-container">
+        <h2>Update Account</h2>
+        <form onSubmit={handleUpdate}>
+          <input 
+            type="email" 
+            placeholder="New Email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            className="input-field"
+          />
+          <input 
+            type="text" 
+            placeholder="New Username" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+            className="input-field"
+          />
+          <input 
+            type="password" 
+            placeholder="New Password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            className="input-field"
+          />
+          <button type="submit" className="btn-login">Update Account</button>
+        </form>
+      </div>
     </div>
   );
 };
