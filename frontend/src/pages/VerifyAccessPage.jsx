@@ -13,9 +13,9 @@ const VerifyAccessPage = () => {
 
     // Check the current URL and log it
     console.log('VerifyAccessPage: Current URL:', window.location.href);  // Full URL with hash
-    
+
     // Extract token from the URL hash fragment (after the `#`)
-    const hashToken = location.hash.split('#/verify-access/')[1];  // Extract the token from the hash fragment
+    const hashToken = location.hash.split('/')[2];  // Extract the token from the hash fragment
     console.log('VerifyAccessPage: location.hash:', location.hash);  // Log the entire location.hash
     console.log('VerifyAccessPage: Extracted token from URL hash:', hashToken);  // Log token
 
@@ -30,7 +30,6 @@ const VerifyAccessPage = () => {
       console.log('VerifyAccessPage: Sending token to the backend for verification...');
 
       try {
-        // Send the token to the backend to verify it
         const response = await axios.post(
           `https://invota-backend-production.up.railway.app/api/auth/verify-access/${hashToken}`
         );
@@ -42,11 +41,9 @@ const VerifyAccessPage = () => {
 
         if (response.status === 200) {
           setMessage('Access granted. Redirecting...');
-          console.log('VerifyAccessPage: Access granted. Redirecting...');
-          // Redirect to sensitive details page or show the data
           setTimeout(() => {
             console.log('VerifyAccessPage: Redirecting to /view-sensitive-details');
-            navigate('/view-sensitive-details');  // Use navigate() instead of history.push()
+            navigate('/view-sensitive-details');
           }, 2000);
         } else {
           console.log('VerifyAccessPage: Unexpected response status:', response.status);
@@ -61,8 +58,8 @@ const VerifyAccessPage = () => {
     };
 
     console.log('VerifyAccessPage: Token received, calling verifyToken...');
-    verifyToken();  // Call the verifyToken function on mount
-  }, [location.hash, navigate]);  // Re-run the effect if the hash changes
+    verifyToken();
+  }, [location.hash, navigate]);
 
   return (
     <div>

@@ -53,9 +53,9 @@ button:focus {
   background-color: #ffffff; /* White background for content */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow around the container */
   border-radius: 8px; /* Rounded corners */
+  margin-top: 30px; /* Space from top */
 }
 
-/* Light Blue Background for Specific Sections */
 .bg-light-blue {
   background-color: #e0f7fa; /* Light Blue Background */
   padding: 20px;
@@ -63,10 +63,23 @@ button:focus {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
+/* Links Styles */
+a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .container {
     padding: 20px;
+    margin-top: 20px; /* Reduce margin on smaller screens */
   }
 
   h1, h2, h3, h4 {
@@ -75,5 +88,30 @@ button:focus {
 
   button {
     padding: 10px 20px; /* Smaller buttons on mobile */
+    font-size: 0.9rem; /* Adjust button text size */
+  }
+
+  .bg-light-blue {
+    padding: 15px; /* Adjust padding for smaller screens */
+  }
+}
+
+/* Additional responsiveness for mobile screens */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px; /* Adjust font size for very small screens */
+  }
+
+  h1, h2, h3, h4 {
+    font-size: 1rem; /* Further reduce font size for headers */
+  }
+
+  .container {
+    padding: 15px; /* More compact padding for mobile */
+  }
+
+  button {
+    padding: 10px 15px; /* Further reduce button size */
+    font-size: 0.8rem; /* Reduce font size for buttons */
   }
 }

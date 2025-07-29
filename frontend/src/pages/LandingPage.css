@@ -1,31 +1,115 @@
-/* LandingPage.css */
+/* Landing Page Main Styles */
+.container-fluid {
+  background: rgba(0, 0, 0, 0.8); /* Darken background slightly */
+  backdrop-filter: blur(5px); /* Apply slight blur */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-.landing-container {
-  background: rgba(0, 0, 255, 0.1);
-  backdrop-filter: blur(10px);
+/* Glass effect container */
+.container.bg-glass {
+  background: rgba(255, 255, 255, 0.1); /* Transparent white background */
+  backdrop-filter: blur(10px); /* Glass effect */
+  border-radius: 15px;
   padding: 30px;
-  border-radius: 10px;
-  margin-top: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px; /* Make sure it doesn't stretch too much on larger screens */
 }
 
-.landing-title {
+/* Title and section headers */
+h2, h4 {
+  text-align: center;
   color: #ffffff;
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-weight: bold;
 }
 
-.landing-description {
+/* Description text */
+p {
   color: #ffffff;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
+/* Button Styles */
 .landing-button {
   background-color: #007bff;
-  padding: 12px 20px;
-  border-radius: 5px;
-  font-size: 1.1rem;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  width: 100%;
+  max-width: 250px; /* Make the button more compact */
 }
 
 .landing-button:hover {
   background-color: #0056b3;
+  cursor: pointer;
+}
+
+/* Section Spacing */
+.mb-5 {
+  margin-bottom: 25px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Footer Section */
+footer {
+  background-color: #222;
+  padding: 15px 0;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+}
+
+footer p {
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  .container.bg-glass {
+    padding: 20px; /* Slightly less padding for mobile */
+  }
+
+  .landing-button {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+  }
+
+  h2 {
+    font-size: 1.8rem; /* Slightly smaller font size for small screens */
+  }
+
+  h4 {
+    font-size: 1.4rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-fluid {
+    padding: 0 10px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  .landing-button {
+    font-size: 1rem;
+    width: 100%; /* Full-width button on small screens */
+  }
 }
