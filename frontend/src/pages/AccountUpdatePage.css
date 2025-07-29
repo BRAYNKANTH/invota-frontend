@@ -1,0 +1,126 @@
+/* General Styles for Background */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  background-image: url('logo.png'); /* Add your background image URL */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  position: relative; /* Positioning for the dark mask overlay */
+}
+
+/* Dark Overlay on Background */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dark mask overlay */
+  z-index: -1; /* Make sure it stays behind the content */
+}
+
+/* Glassy Effect Container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.glassy-container {
+  background: rgba(255, 255, 255, 0.3); /* Glassy effect */
+  backdrop-filter: blur(12px);
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  width: 80%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 2.8rem; /* Larger size for the heading */
+  margin-bottom: 20px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.input-field {
+  width: 100%;
+  padding: 18px;
+  margin: 15px 0;
+  font-size: 1.2rem; /* Larger text for input fields */
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  background: rgba(255, 255, 255, 0.5);
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: #00b0f0;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.btn-login {
+  background: linear-gradient(135deg, #00b0f0, #f46ff4); /* Gradient for the button */
+  color: white;
+  border: none;
+  padding: 18px 35px;
+  font-size: 1.5rem; /* Increase font size for button */
+  font-weight: 600; /* Make the text bold */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+}
+
+.btn-login:hover {
+  background: linear-gradient(135deg, #f46ff4, #00b0f0); /* Hover effect for the button */
+}
+
+.footer {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.footer:hover {
+  opacity: 1;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .glassy-container {
+    padding: 30px;
+    width: 90%; /* Increase the width on mobile */
+  }
+
+  h2 {
+    font-size: 2rem; /* Smaller font size for mobile */
+  }
+
+  h4 {
+    font-size: 1.3rem; /* Smaller subheading size for mobile */
+  }
+
+  p {
+    font-size: 0.9rem; /* Adjust paragraph size for mobile */
+  }
+
+  .btn-login {
+    font-size: 1.3rem; /* Adjust button font size */
+    padding: 12px 25px; /* Adjust padding for better fit */
+  }
+}
