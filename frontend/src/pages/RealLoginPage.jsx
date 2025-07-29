@@ -42,12 +42,12 @@ const RealLoginPage = () => {
 
       // If login is successful, check the response
       if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
-        navigate('/update-basic-details');
+        localStorage.setItem('authToken', response.data.token); // Store JWT token in localStorage
+        navigate('/update-basic-details'); // Redirect to the account update page
       }
     } catch (err) {
       console.error('Login error:', err);
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.error || 'Invalid credentials');
     }
   };
 
