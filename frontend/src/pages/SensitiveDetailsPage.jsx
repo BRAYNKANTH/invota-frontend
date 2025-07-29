@@ -15,7 +15,7 @@ const SensitiveDetailsPage = () => {
   useEffect(() => {
     const fetchSensitiveDetails = async () => {
       console.log('Fetching sensitive details...');
-
+      
       // If token exists (for logged-in users)
       if (token) {
         console.log('Token found. Validating...');
