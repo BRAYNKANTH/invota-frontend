@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';  // Correct import for jwt-decode
+import { jwtDecode } from 'jwt-decode';
+
 
 const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');

@@ -1,63 +1,79 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
-const ViewSensitiveDetailsPage = () => {
-  const [sensitiveDetails, setSensitiveDetails] = useState(null);
-  const [error, setError] = useState(null);  // For handling errors
+
+const SensitiveDetailsPage = () => {
+  const [allergies, setAllergies] = useState('');
+  const [diseases, setDiseases] = useState('');
+  const [medicalReports, setMedicalReports] = useState('');
+  const [error, setError] = useState('');  // For handling errors
   const navigate = useNavigate();
   const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
-  const userId = new URLSearchParams(window.location.search).get('userId');  // Get userId from URL query params (for external users)
-
-  console.log('Token retrieved from localStorage in ViewSensitiveDetailsPage:', token);  // Debug log
+  const userId = new URLSearchParams(window.location.search).get('userId');  // Get userId from query params for external users
 
   useEffect(() => {
     const fetchSensitiveDetails = async () => {
-      if (!token && !userId) {
-        setError('You are not authorized to view this page without login.');
-        navigate('/login');
-        return;
-      }
-
-      if (!token) {
-        // If no token, external user, navigate to request access page
-        setError('You need to request access to view sensitive details.');
-        navigate('/request-emergency-access', { state: { userId } });
-        return;
-      }
-
-      console.log('Fetching sensitive details for logged-in user');  // Debug log
-
-      try {
-        // For logged-in users, fetch sensitive details
-        const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details', {
-          headers: { Authorization: `Bearer ${token}` },  // Send token for authorized requests
-        });
-        setSensitiveDetails(response.data.sensitiveDetails);
-      } catch (error) {
-        console.error('Error fetching sensitive details:', error);
-        setError('Failed to fetch sensitive details.');
-      }
-    };
-
-    const checkExternalUserAccess = async () => {
-      // If the user is external (no token), check their access approval status
-      if (userId) {
+      console.log('Fetching sensitive details...');
+      
+      // If token exists (for logged-in users)
+      if (token) {
+        console.log('Token found. Validating...');
+        
         try {
-          // Check if the external user exists and has access approved
-          const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
+          // If token exists, validate it
+          const decoded = jwtDecode(token);  // Decode the token to check if it's expired
+          const expirationTime = decoded.exp * 1000;  // Expiry time in milliseconds
+          const currentTime = Date.now();
+
+          // If the token has expired, remove it and redirect to login
+          if (currentTime > expirationTime) {
+            console.log('Token has expired.');
+            localStorage.removeItem('authToken');
+            navigate('/login');
+            return;
+          }
+
+          console.log('Token is valid. Fetching sensitive details for logged-in user...');
           
+          // Fetch sensitive details for logged-in users
+          const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          console.log('Fetched sensitive details for logged-in user:', response.data);
+          setAllergies(response.data.sensitiveDetails.allergies);
+          setDiseases(response.data.sensitiveDetails.diseases);
+          setMedicalReports(response.data.sensitiveDetails.medicalReports);
+        } catch (error) {
+          console.error('Error fetching sensitive details:', error);
+          setError('Failed to fetch sensitive details.');
+        }
+      } else if (userId) {
+        // If no token, check for external user using userId
+        console.log('No token found. Checking for external user with userId:', userId);
+
+        try {
+          const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
+
+          console.log('External user response:', response.data);
+
           if (response.data.error) {
-            // If the user doesn't exist or is not approved, navigate to the request page
+            console.log('Error: ', response.data.error);
             setError(response.data.error);
             navigate('/request-emergency-access', { state: { userId } });
           } else {
-            // If the user is approved, display sensitive details
             const { emergencyContactApproved, sensitiveDetails } = response.data;
 
             if (emergencyContactApproved) {
-              setSensitiveDetails(sensitiveDetails);
+              // If emergency contact is approved, display the sensitive details even without a token
+              console.log('Emergency contact approved. Showing sensitive details...');
+              setAllergies(sensitiveDetails.allergies);
+              setDiseases(sensitiveDetails.diseases);
+              setMedicalReports(sensitiveDetails.medicalReports);
             } else {
+              // If not approved, redirect to the request access page
+              console.log('Emergency contact not approved. Redirecting to request access page...');
               setError('Access not approved. Please request emergency access.');
               navigate('/request-emergency-access', { state: { userId } });
             }
@@ -66,31 +82,75 @@ const ViewSensitiveDetailsPage = () => {
           console.error('Error checking external user access:', error);
           setError('Error checking access status.');
         }
+      } else {
+        // If neither token nor userId is found, redirect to request access page
+        console.log('No token and no userId found. Redirecting to request access page...');
+        navigate('/request-emergency-access');
       }
     };
 
-    if (userId) {
-      checkExternalUserAccess();  // For external users, check if they're approved
-    } else {
-      fetchSensitiveDetails();  // For logged-in users, fetch sensitive details
-    }
+    fetchSensitiveDetails();
   }, [token, userId, navigate]);
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    if (!token) {
+      console.log('No token found. Redirecting to request access...');
+      navigate('/request-emergency-access');
+      return;
+    }
+
+    try {
+      console.log('Sending request to update sensitive details...');
+      
+      const response = await axios.put(
+        'https://invota-backend-production.up.railway.app/api/auth/update-sensitive-details',
+        {
+          allergies,
+          diseases,
+          medicalReports,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log('Update successful:', response.data);
+      navigate('/view-basic-details');
+    } catch (error) {
+      console.error('Error updating sensitive details:', error.response?.data || error);
+      alert('Failed to update sensitive details');
+    }
+  };
 
   return (
     <div>
-      <h2>Sensitive Details</h2>
-      {error && <p className="text-danger">{error}</p>}
-      {sensitiveDetails ? (
-        <div>
-          <p><strong>Allergies:</strong> {sensitiveDetails.allergies}</p>
-          <p><strong>Diseases:</strong> {sensitiveDetails.diseases}</p>
-          <p><strong>Medical Reports:</strong> {sensitiveDetails.medicalReports}</p>
-        </div>
-      ) : (
-        <p>Loading sensitive details...</p>
-      )}
+      <h2>Update Sensitive Details</h2>
+      {error && <p className="text-danger">{error}</p>}  {/* Display error message if any */}
+      <form onSubmit={handleUpdate}>
+        <input
+          type="text"
+          placeholder="Allergies"
+          value={allergies}
+          onChange={(e) => setAllergies(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Diseases"
+          value={diseases}
+          onChange={(e) => setDiseases(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Medical Reports"
+          value={medicalReports}
+          onChange={(e) => setMedicalReports(e.target.value)}
+        />
+        <button type="submit">Update Sensitive Details</button>
+      </form>
     </div>
   );
 };
 
-export default ViewSensitiveDetailsPage;
+export default SensitiveDetailsPage;
