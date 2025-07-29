@@ -12,9 +12,7 @@ const VerifyAccessPage = () => {
     console.log('VerifyAccessPage: useEffect triggered');  // Debug log for useEffect
 
     // Extract token from the URL hash fragment (after the `#`)
-    const hashToken = window.location.hash.split('/')[2];
-console.log(hashToken);
- // Correctly extract the token
+    const hashToken = window.location.hash.split('/')[2]; // Correctly extract the token
     console.log('VerifyAccessPage: location.hash:', location.hash);  // Log the entire location.hash
     console.log('VerifyAccessPage: Extracted token from URL hash:', hashToken);  // Log token
 
@@ -40,9 +38,10 @@ console.log(hashToken);
 
         if (response.status === 200) {
           setMessage('Access granted. Redirecting...');
+          console.log('VerifyAccessPage: Access granted. Redirecting...');
           setTimeout(() => {
             console.log('VerifyAccessPage: Redirecting to /view-sensitive-details');
-            navigate('/view-sensitive-details');
+            navigate('/view-sensitive-details');  // Redirect after successful access
           }, 2000);
         } else {
           console.log('VerifyAccessPage: Unexpected response status:', response.status);
@@ -57,7 +56,7 @@ console.log(hashToken);
     };
 
     console.log('VerifyAccessPage: Token received, calling verifyToken...');
-    verifyToken();
+    verifyToken();  // Call the verifyToken function on mount
   }, [location.hash, navigate]);
 
   return (
