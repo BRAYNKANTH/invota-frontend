@@ -21,8 +21,16 @@ const RealLoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Check if fields are empty
     if (!usernameOrEmail || !password) {
       setError('Please fill in both fields');
+      return;
+    }
+
+    // Check if email is in a valid format (basic validation)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (usernameOrEmail && !emailRegex.test(usernameOrEmail)) {
+      setError('Please enter a valid email address');
       return;
     }
 
