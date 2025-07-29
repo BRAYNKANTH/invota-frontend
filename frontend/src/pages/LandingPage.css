@@ -1,115 +1,123 @@
-/* Landing Page Main Styles */
-.container-fluid {
-  background: rgba(0, 0, 0, 0.8); /* Darken background slightly */
-  backdrop-filter: blur(5px); /* Apply slight blur */
-  min-height: 100vh;
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background: #f4f7fc;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.landing-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #160cd0, #f46ff4); /* Gradient background */
+  padding: 20px; /* Add padding to ensure content doesn't touch edges on smaller screens */
+  flex-direction: column; /* Make content stack vertically on small screens */
 }
 
-/* Glass effect container */
-.container.bg-glass {
-  background: rgba(255, 255, 255, 0.1); /* Transparent white background */
-  backdrop-filter: blur(10px); /* Glass effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.536);
+  padding: 40px;
   border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px; /* Make sure it doesn't stretch too much on larger screens */
-}
-
-/* Title and section headers */
-h2, h4 {
+  backdrop-filter: blur(10px);
   text-align: center;
-  color: #ffffff;
-  font-weight: bold;
-}
-
-/* Description text */
-p {
-  color: #ffffff;
-  font-size: 1.1rem;
-}
-
-/* Button Styles */
-.landing-button {
-  background-color: #007bff;
   color: white;
-  padding: 15px 30px;
-  border-radius: 25px;
-  font-size: 1.2rem;
-  width: 100%;
-  max-width: 250px; /* Make the button more compact */
+  width: 80%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.landing-button:hover {
-  background-color: #0056b3;
-  cursor: pointer;
+.logo-container {
+  margin-bottom: 30px;
 }
 
-/* Section Spacing */
-.mb-5 {
-  margin-bottom: 25px;
+.logo {
+  width: 150px;
+  height: auto;
 }
 
-.text-center {
-  text-align: center;
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
 }
 
-/* Footer Section */
-footer {
-  background-color: #222;
-  padding: 15px 0;
-  position: relative;
-  width: 100%;
-  bottom: 0;
+h4 {
+  font-size: 1.5rem;
+  margin-top: 20px;
 }
 
-footer p {
-  color: #ffffff;
+p {
   font-size: 1rem;
+  line-height: 1.6;
+  margin: 10px 0;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 767px) {
-  .container.bg-glass {
-    padding: 20px; /* Slightly less padding for mobile */
+.start-button-container {
+  margin-top: 30px;
+}
+
+.btn-start {
+  background: linear-gradient(135deg, #f46ff4, #160cd0); /* Gradient from blue to pink */
+  color: black; /* Change text color to black */
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.5rem; /* Increase font size */
+  font-weight: 600; /* Make the text bold */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease; /* Transition for background change */
+}
+
+.btn-start:hover {
+  background: linear-gradient(135deg, #160cd0, #f46ff4); /* Reverse gradient on hover */
+}
+
+.footer {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.footer:hover {
+  opacity: 1;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .landing-container {
+    padding: 10px;
   }
 
-  .landing-button {
-    padding: 12px 20px;
-    font-size: 1.1rem;
+  .glass-effect {
+    padding: 30px;
+    width: 90%; /* Increase the width on mobile */
   }
 
   h2 {
-    font-size: 1.8rem; /* Slightly smaller font size for small screens */
+    font-size: 2rem; /* Smaller font size for mobile */
   }
 
   h4 {
-    font-size: 1.4rem;
+    font-size: 1.3rem; /* Smaller subheading size for mobile */
   }
 
   p {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container-fluid {
-    padding: 0 10px;
+    font-size: 0.9rem; /* Adjust paragraph size for mobile */
   }
 
-  h2 {
-    font-size: 1.5rem;
+  .btn-start {
+    font-size: 1.3rem; /* Adjust button font size */
+    padding: 12px 25px; /* Adjust padding for better fit */
   }
 
-  p {
-    font-size: 0.9rem;
-  }
-
-  .landing-button {
-    font-size: 1rem;
-    width: 100%; /* Full-width button on small screens */
+  .footer {
+    font-size: 0.8rem; /* Smaller font size for footer on mobile */
   }
 }

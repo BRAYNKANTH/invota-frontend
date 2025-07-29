@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import './TempLoginPage.css'; // Import custom CSS
 
 const TempLoginPage = () => {
   const [username, setUsername] = useState('');
@@ -21,13 +22,27 @@ const TempLoginPage = () => {
   };
 
   return (
-    <div>
-      <h2>Temporary Login</h2>
-      <form onSubmit={handleLogin}>
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Login</button>
-      </form>
+    <div className="login-container">
+      <div className="glassy-container">
+        <h1>Temporary Login</h1>
+        <form onSubmit={handleLogin}>
+          <input 
+            type="text" 
+            placeholder="Username" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+            className="input-field"
+          />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            className="input-field"
+          />
+          <button type="submit" className="btn-login">Login</button>
+        </form>
+      </div>
     </div>
   );
 };
