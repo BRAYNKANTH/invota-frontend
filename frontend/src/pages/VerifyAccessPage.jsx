@@ -8,20 +8,24 @@ const VerifyAccessPage = () => {
   const location = useLocation();  // Get location object
 
   useEffect(() => {
-    // Extract token from URL hash (after the `#` symbol)
-    const hash = location.hash;
-    const token = new URLSearchParams(hash.replace('#', '')).get('token');  // Extract token from hash
+    // Extract token from the URL query parameters
+    const queryParams = new URLSearchParams(location.search);  // Get query parameters
+    const token = queryParams.get('token');  // Get token from the query string
 
     if (!token) {
       setError('Token is missing in the URL');
       return;
     }
 
+    console.log('Token extracted:', token);  // For debugging
+
     // Now, send the token to the backend to verify it
     const verifyToken = async () => {
       try {
-        const response = await axios.post(`https://invota-backend-production.up.railway.app/api/auth/verify-access/${token}`);
-        
+        const response = await axios.post(
+          `https://invota-backend-production.up.railway.app/api/auth/verify-access/${token}`
+        );
+
         if (response.status === 200) {
           setMessage('Access granted. Redirecting...');
           // You can redirect or show the sensitive details
@@ -33,8 +37,7 @@ const VerifyAccessPage = () => {
     };
 
     verifyToken();  // Call the verifyToken function on mount
-
-  }, [location.hash]);  // Re-run if hash changes
+  }, [location.search]);  // Re-run if location.search changes
 
   return (
     <div>
