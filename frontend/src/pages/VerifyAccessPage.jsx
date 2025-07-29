@@ -11,11 +11,8 @@ const VerifyAccessPage = () => {
   useEffect(() => {
     console.log('VerifyAccessPage: useEffect triggered');  // Debug log for useEffect
 
-    // Check the current URL and log it
-    console.log('VerifyAccessPage: Current URL:', window.location.href);  // Full URL with hash
-
     // Extract token from the URL hash fragment (after the `#`)
-    const hashToken = location.hash.split('/')[2];  // Extract the token from the hash fragment
+    const hashToken = location.hash.split('#/verify-access/')[1];  // Correctly extract the token
     console.log('VerifyAccessPage: location.hash:', location.hash);  // Log the entire location.hash
     console.log('VerifyAccessPage: Extracted token from URL hash:', hashToken);  // Log token
 
