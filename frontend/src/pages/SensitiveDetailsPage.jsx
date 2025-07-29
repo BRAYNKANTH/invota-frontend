@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';  // Correctly import jwtDecode as a named import
+import jwtDecode from 'jwt-decode';  // Correct import
 
 const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
@@ -13,8 +13,8 @@ const SensitiveDetailsPage = () => {
   const userId = new URLSearchParams(window.location.search).get('userId');  // Get userId from URL query params (for external users)
 
   useEffect(() => {
-    // Check if the user is logged in or external (based on token or emergencyContactApproved)
     const fetchSensitiveDetails = async () => {
+      // Handle if token exists (user is logged in)
       if (token) {
         try {
           const decoded = jwtDecode(token);  // Decode the token to check if it's expired
@@ -32,6 +32,7 @@ const SensitiveDetailsPage = () => {
           const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details', {
             headers: { Authorization: `Bearer ${token}` },  // Send token for authorized requests
           });
+
           setAllergies(response.data.sensitiveDetails.allergies);
           setDiseases(response.data.sensitiveDetails.diseases);
           setMedicalReports(response.data.sensitiveDetails.medicalReports);
@@ -39,9 +40,11 @@ const SensitiveDetailsPage = () => {
           console.error('Error fetching sensitive details:', error);
           setError('Failed to fetch sensitive details.');
         }
-      } else if (userId) {
-        // If the user is external, check for their emergencyContactApproved status
+      } 
+      // Handle if there's no token (external user)
+      else if (userId) {
         try {
+          // Fetch the external user's sensitive details and check if emergencyContactApproved is true
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
 
           if (response.data.error) {
@@ -51,7 +54,7 @@ const SensitiveDetailsPage = () => {
             const { emergencyContactApproved, sensitiveDetails } = response.data;
 
             if (emergencyContactApproved) {
-              // Allow access even if no token is present, as the emergency contact approved
+              // Allow access even if no token is present, as the emergency contact is approved
               setAllergies(sensitiveDetails.allergies);
               setDiseases(sensitiveDetails.diseases);
               setMedicalReports(sensitiveDetails.medicalReports);
@@ -66,7 +69,8 @@ const SensitiveDetailsPage = () => {
           setError('Error checking access status.');
         }
       } else {
-        navigate('/request-emergency-access');  // If no token or userId, redirect to request access page
+        // If no token or userId, redirect to request access page
+        navigate('/request-emergency-access');
       }
     };
 
