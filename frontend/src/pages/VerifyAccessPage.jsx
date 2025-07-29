@@ -1,31 +1,33 @@
-// VerifyAccessPage.jsx (Frontend)
+// VerifyAccessPage.jsx
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const VerifyAccessPage = () => {
-  const { token } = useParams();  // Get the token from the URL params
-  const [error, setError] = useState('');
+  const { token } = useParams();  // Get the token from the URL parameter
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
-
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/verify-access', { token }); // Make sure the URL is correct
+        const response = await axios.post(`https://invota-backend-production.up.railway.app/api/auth/verify-access/${token}`);
+        
         if (response.status === 200) {
-          setMessage('Access granted. You can now close this window. The requester may now access sensitive details.');
-          
+          setMessage('Access granted. Redirecting...');
+          // Redirect to the next page after some time
         }
       } catch (error) {
+        setError('Failed to verify the token.');
         console.error('Error verifying token:', error);
-        setError(error.response?.data?.error || 'Verification failed.');
       }
     };
 
-    verifyToken();
-  }, [token, navigate]);
+    if (token) {
+      verifyToken();  // Trigger token verification when component mounts
+    }
+  }, [token]);
 
   return (
     <div>
