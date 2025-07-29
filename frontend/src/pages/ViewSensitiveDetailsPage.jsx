@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import './SensitiveDetailsPage.css';  // Custom CSS for this page
 
@@ -8,7 +8,7 @@ const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
   const [diseases, setDiseases] = useState('');
   const [medicalReports, setMedicalReports] = useState('');
-  const [error, setError] = useState('');  // For handling errors
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
   const userId = new URLSearchParams(window.location.search).get('userId');  // Get userId from query params for external users
@@ -16,16 +16,19 @@ const SensitiveDetailsPage = () => {
   useEffect(() => {
     const fetchSensitiveDetails = async () => {
       console.log('Fetching sensitive details...');
-      
+
       // If token exists (for logged-in users)
       if (token) {
         console.log('Token found. Validating...');
-        
+
         try {
           // If token exists, validate it
           const decoded = jwtDecode(token);  // Decode the token to check if it's expired
           const expirationTime = decoded.exp * 1000;  // Expiry time in milliseconds
           const currentTime = Date.now();
+
+          console.log('Token Expiration Time:', new Date(expirationTime));  // Log expiration time for debugging
+          console.log('Current Time:', new Date(currentTime));  // Log current time for debugging
 
           // If the token has expired, remove it and redirect to login
           if (currentTime > expirationTime) {
@@ -55,7 +58,6 @@ const SensitiveDetailsPage = () => {
 
         try {
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
-
           console.log('External user response:', response.data);
 
           if (response.data.error) {
