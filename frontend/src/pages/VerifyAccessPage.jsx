@@ -29,7 +29,7 @@ console.log(hashToken);
       console.log('VerifyAccessPage: Sending token to the backend for verification...');
 
       try {
-        const response = await axios.post(
+        const response = await axios.get(
           `https://invota-backend-production.up.railway.app/api/auth/verify-access/${hashToken}`
         );
 
