@@ -16,7 +16,7 @@ const VerifiedPage = () => {
     <div>
       <h2>Email Verified Successfully</h2>
       <p>Your email has been successfully verified. You will be redirected to the login page shortly.</p>
-      <p>If you are not redirected, click below:</p>
+      <p>If you are not redirected, pls click below:</p>
       <button onClick={() => navigate('/login')}>Go to Login</button>
     </div>
   );
