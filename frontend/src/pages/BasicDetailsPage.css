@@ -10,36 +10,73 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Soft shadow for 3D effect */
   max-width: 500px;
   width: 100%;
+  padding: 30px;
+  border-radius: 12px; /* Round the corners of the card */
 }
 
 h2 {
   font-size: 2rem;
   color: #000000; /* Set the text color to black */
+  margin-bottom: 1rem;
+  font-weight: bold;
 }
 
 label {
   font-size: 1rem;
   color: #000000; /* Set the label text color to black */
+  font-weight: 600;
 }
 
-input {
+input,
+select {
   font-size: 1rem;
   padding: 0.8rem;
   border-radius: 8px;
   border: none;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   background-color: #ffffff; /* White background for input fields */
   color: #000000; /* Set the text color inside input fields to black */
 }
 
+input[type="file"] {
+  background-color: transparent;
+  border: 2px solid #007bff;
+  padding: 0.8rem;
+  color: #007bff;
+  font-weight: bold;
+}
+
 button {
   background-color: #007bff;
-  color: rgb(54, 71, 223);
+  color: #ffffff;
   padding: 12px;
   font-size: 1.2rem;
   border-radius: 8px;
   border: none;
   margin-top: 15px;
+  width: 100%;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 1rem;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Image Preview */
+img {
+  border-radius: 8px;
+  margin-top: 15px;
+  max-width: 200px; /* Restrict image preview size */
+  display: block;
+  margin: 10px auto;
 }
 
 /* Responsiveness */
@@ -50,5 +87,14 @@ button {
 
   h2 {
     font-size: 1.5rem;
+  }
+
+  input,
+  select {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 1rem;
   }
 }
