@@ -9,8 +9,8 @@ const RequestEmergencyAccessPage = () => {
   const [checking, setChecking] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { userId } = location.state || {};
-
+ const userId = location.state?.userId;
+ 
   useEffect(() => {
     console.log("Component mounted, userId from location:", userId);
   }, [userId]);
