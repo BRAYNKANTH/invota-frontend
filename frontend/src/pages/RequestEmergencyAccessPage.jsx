@@ -9,11 +9,18 @@ const RequestEmergencyAccessPage = () => {
   const [checking, setChecking] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
- const userId = location.state?.userId;
- 
+
+  const userId = location.state?.userId; // Get userId from location state (from previous page)
+
   useEffect(() => {
-    console.log("Component mounted, userId from location:", userId);
-  }, [userId]);
+    if (!userId) {
+      setError('User ID is missing');
+      console.log('Error: User ID is missing');
+      navigate('/landing');  // Redirect to landing page if no userId
+    } else {
+      console.log('Component mounted, userId from location:', userId);
+    }
+  }, [userId, navigate]);
 
   const handleRequest = async (e) => {
     e.preventDefault();
