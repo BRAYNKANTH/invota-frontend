@@ -10,12 +10,18 @@ const RequestEmergencyAccessPage = () => {
   const location = useLocation();
   const { userId } = location.state || {};
 
+  // Log the userId received from the location
+  useEffect(() => {
+    console.log("Component mounted, userId from location:", userId);
+  }, [userId]);
+
   // Function to handle emergency access request
   const handleRequest = async (e) => {
     e.preventDefault();
 
     if (!userId) {
       setError('User ID is missing');
+      console.log('Error: User ID is missing');
       return;
     }
 
@@ -23,13 +29,15 @@ const RequestEmergencyAccessPage = () => {
 
     try {
       const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/request-emergency-access', { userId });
+      console.log('Response from request-emergency-access:', response); // Debug log
 
       if (response.status === 200) {
         setAccessStatus('Access request sent to the emergency contact. They will receive a link to verify access.');
+        console.log('Access request sent successfully');
         setChecking(true); // Start checking for access approval
       }
     } catch (error) {
-      console.error('Error while requesting emergency access:', error);
+      console.error('Error while requesting emergency access:', error); // Log the error details
       setError(error.response?.data?.message || 'Failed to request emergency access');
     }
   };
@@ -40,15 +48,18 @@ const RequestEmergencyAccessPage = () => {
 
     const interval = setInterval(async () => {
       try {
+        console.log('Checking for access approval...'); // Debug log
         const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/check-access', { userId });
+        console.log('Response from check-access:', response); // Debug log
 
         if (response.status === 200 && response.data.accessGranted) {
           clearInterval(interval);  // Stop checking once access is granted
           setAccessStatus('Access granted! Redirecting...');
+          console.log('Access granted, redirecting to sensitive details...');
           setTimeout(() => navigate(`/view-sensitive-details/${userId}`), 2000);
         }
       } catch (err) {
-        console.log("Access not granted yet or expired");
+        console.log("Access not granted yet or expired", err);  // Log error if access isn't granted yet
       }
     }, 5000); // Check every 5 seconds
 

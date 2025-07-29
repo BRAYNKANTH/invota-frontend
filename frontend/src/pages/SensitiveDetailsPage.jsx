@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';  // Correctly import jwtDecode as a named import
+import jwtDecode from 'jwt-decode';  // Correct import for jwt-decode
 
 const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
@@ -29,8 +29,8 @@ const SensitiveDetailsPage = () => {
           // If the token has expired, remove it and redirect to login
           if (currentTime > expirationTime) {
             console.log('Token has expired.');
-            localStorage.removeItem('authToken');
-            navigate('/login');
+            localStorage.removeItem('authToken');  // Remove expired token
+            navigate('/login');  // Redirect user to login
             return;
           }
 
@@ -41,20 +41,25 @@ const SensitiveDetailsPage = () => {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log('Fetched sensitive details for logged-in user:', response.data);
-          setAllergies(response.data.sensitiveDetails.allergies);
-          setDiseases(response.data.sensitiveDetails.diseases);
-          setMedicalReports(response.data.sensitiveDetails.medicalReports);
+
+          if (response.data && response.data.sensitiveDetails) {
+            setAllergies(response.data.sensitiveDetails.allergies);
+            setDiseases(response.data.sensitiveDetails.diseases);
+            setMedicalReports(response.data.sensitiveDetails.medicalReports);
+          } else {
+            setError('Error fetching sensitive details');
+          }
         } catch (error) {
           console.error('Error fetching sensitive details:', error);
           setError('Failed to fetch sensitive details.');
         }
-      } else if (userId) {
-        // If no token, check for external user using userId
+      } 
+      // If there's no token (external user with userId)
+      else if (userId) {
         console.log('No token found. Checking for external user with userId:', userId);
 
         try {
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
-
           console.log('External user response:', response.data);
 
           if (response.data.error) {
@@ -65,13 +70,11 @@ const SensitiveDetailsPage = () => {
             const { emergencyContactApproved, sensitiveDetails } = response.data;
 
             if (emergencyContactApproved) {
-              // If emergency contact is approved, display the sensitive details even without a token
               console.log('Emergency contact approved. Showing sensitive details...');
               setAllergies(sensitiveDetails.allergies);
               setDiseases(sensitiveDetails.diseases);
               setMedicalReports(sensitiveDetails.medicalReports);
             } else {
-              // If not approved, redirect to the request access page
               console.log('Emergency contact not approved. Redirecting to request access page...');
               setError('Access not approved. Please request emergency access.');
               navigate('/request-emergency-access', { state: { userId } });
@@ -82,7 +85,6 @@ const SensitiveDetailsPage = () => {
           setError('Error checking access status.');
         }
       } else {
-        // If neither token nor userId is found, redirect to request access page
         console.log('No token and no userId found. Redirecting to request access page...');
         navigate('/request-emergency-access');
       }
@@ -153,3 +155,4 @@ const SensitiveDetailsPage = () => {
 };
 
 export default SensitiveDetailsPage;
+
