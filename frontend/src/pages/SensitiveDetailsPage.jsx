@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';  // Correct import
+import jwtDecode from 'jwt-decode';  // Correct import for jwt-decode
 
 const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
@@ -14,7 +14,7 @@ const SensitiveDetailsPage = () => {
 
   useEffect(() => {
     const fetchSensitiveDetails = async () => {
-      // Handle if token exists (user is logged in)
+      // If token exists (user is logged in)
       if (token) {
         try {
           const decoded = jwtDecode(token);  // Decode the token to check if it's expired
@@ -41,7 +41,7 @@ const SensitiveDetailsPage = () => {
           setError('Failed to fetch sensitive details.');
         }
       } 
-      // Handle if there's no token (external user)
+      // If there's no token (external user with userId)
       else if (userId) {
         try {
           // Fetch the external user's sensitive details and check if emergencyContactApproved is true
