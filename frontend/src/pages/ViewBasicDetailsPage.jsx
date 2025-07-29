@@ -19,6 +19,14 @@ const ViewBasicDetailsPage = () => {
       const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-public-details/${userId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},  // Send token if available
       });
+
+      // Check if the user is verified
+      if (response.data.publicDetails.isVerified === false) {
+        console.log('User not verified, redirecting to landing page');
+        navigate('/landing');  // Redirect to landing if user is not verified
+        return;
+      }
+
       setPublicDetails(response.data.publicDetails);
     } catch (error) {
       console.error('Error fetching public details:', error.response?.data || error);
@@ -66,7 +74,6 @@ const ViewBasicDetailsPage = () => {
     if (!token) {
       console.log('No token found, redirecting to request access page');  // Debug log
       navigate('/request-emergency-access', { state: { userId } });
-      console.log(userId);
     } else {
       // For logged-in users, navigate to sensitive details page
       console.log('User is logged in, redirecting to sensitive details page');  // Debug log
