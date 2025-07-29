@@ -1,43 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const VerifyAccessPage = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const location = useLocation();  // Get location object
+  const location = useLocation();  // Get location object from React Router
+  const history = useHistory();  // For redirecting after success
 
   useEffect(() => {
-    // Extract token from the URL query parameters
-    const queryParams = new URLSearchParams(location.search);  // Get query parameters
-    const token = queryParams.get('token');  // Get token from the query string
+    console.log('VerifyAccessPage: useEffect triggered');  // Debug log for useEffect
 
-    if (!token) {
+    // Extract token from the URL hash fragment (after the `#`)
+    const hashToken = location.hash.split('/')[2];  // Extract the token from the hash fragment
+    console.log('VerifyAccessPage: location.hash:', location.hash);  // Log the entire location.hash
+    console.log('VerifyAccessPage: Extracted token from URL hash:', hashToken);  // Log token
+
+    if (!hashToken) {
       setError('Token is missing in the URL');
+      console.log('VerifyAccessPage: No token found in hash');  // Log the error
       return;
     }
 
-    console.log('Token extracted:', token);  // For debugging
-
-    // Now, send the token to the backend to verify it
+    // Proceed to verify token if it's available
     const verifyToken = async () => {
+      console.log('VerifyAccessPage: Sending token to the backend for verification...');
+
       try {
+        // Send the token to the backend to verify it
         const response = await axios.post(
-          `https://invota-backend-production.up.railway.app/api/auth/verify-access/${token}`
+          `https://invota-backend-production.up.railway.app/api/auth/verify-access/${hashToken}`
         );
+
+        console.log('VerifyAccessPage: Axios request sent');  // Log that the request was sent
+
+        // Log the response data
+        console.log('VerifyAccessPage: Response from backend:', response);  // Log the complete response
 
         if (response.status === 200) {
           setMessage('Access granted. Redirecting...');
-          // You can redirect or show the sensitive details
+          console.log('VerifyAccessPage: Access granted. Redirecting...');
+          // Redirect to sensitive details page or show the data
+          setTimeout(() => {
+            console.log('VerifyAccessPage: Redirecting to /view-sensitive-details');
+            history.push('/view-sensitive-details');  // Redirect after success
+          }, 2000);
+        } else {
+          console.log('VerifyAccessPage: Unexpected response status:', response.status);
         }
       } catch (err) {
         setError('Error verifying the token');
-        console.error('Error verifying token:', err);
+        console.error('VerifyAccessPage: Error while verifying token:', err);  // Log the error object
+        console.log('VerifyAccessPage: Error message:', err.message);  // Log the error message
+        console.log('VerifyAccessPage: Error stack:', err.stack);  // Log the error stack trace
       }
     };
 
+    console.log('VerifyAccessPage: Token received, calling verifyToken...');
     verifyToken();  // Call the verifyToken function on mount
-  }, [location.search]);  // Re-run if location.search changes
+  }, [location.hash, history]);  // Re-run the effect if the hash changes
 
   return (
     <div>
