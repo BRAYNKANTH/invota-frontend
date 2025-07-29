@@ -12,6 +12,7 @@ const BasicDetailsPage = () => {
   const [photo, setPhoto] = useState('');
   const [emergencyContactEmail, setEmergencyContactEmail] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);  // Loading state
   const navigate = useNavigate();
   const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
 
@@ -40,6 +41,15 @@ const BasicDetailsPage = () => {
       return;
     }
 
+    // Basic validation for emergency contact email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emergencyContactEmail)) {
+      setError('Please enter a valid emergency contact email.');
+      return;
+    }
+
+    setIsLoading(true);  // Start loading state
+
     try {
       // Sending the updated details, including emergencyContactEmail, to the backend
       const response = await axios.put(
@@ -59,11 +69,14 @@ const BasicDetailsPage = () => {
         }
       );
 
+      setIsLoading(false);  // End loading state
+
       console.log('Update successful:', response.data);
       navigate('/update-sensitive-details');  // Redirect after successful update
     } catch (error) {
+      setIsLoading(false);  // End loading state
       console.error('Error updating public details:', error.response?.data || error);
-      alert('Failed to update details');
+      setError(error.response?.data?.error || 'Failed to update details');
     }
   };
 
@@ -72,6 +85,10 @@ const BasicDetailsPage = () => {
       <div className="glassy-container">
         <h2 className="text-center text-white mb-4">Update Basic Details</h2>
         {error && <p className="error-message text-center text-danger">{error}</p>}
+        
+        {/* Show loading spinner if in loading state */}
+        {isLoading && <div className="text-center">Loading...</div>}
+
         <form onSubmit={handleUpdate}>
           <div className="form-group mb-3">
             <label htmlFor="fullName" className="text-white">Full Name:</label>
@@ -151,7 +168,9 @@ const BasicDetailsPage = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">Update Basic Details</button>
+          <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+            {isLoading ? 'Updating...' : 'Update Basic Details'}
+          </button>
         </form>
       </div>
     </div>
