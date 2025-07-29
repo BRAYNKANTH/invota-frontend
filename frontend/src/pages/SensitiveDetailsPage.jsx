@@ -7,7 +7,7 @@ const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
   const [diseases, setDiseases] = useState('');
   const [medicalReports, setMedicalReports] = useState('');
-  const [error, setError] = useState('');  // Added state to handle errors
+  const [error, setError] = useState('');  // For handling errors
   const navigate = useNavigate();
   const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
   const userId = new URLSearchParams(window.location.search).get('userId');  // Get userId from query params for external users
@@ -16,6 +16,7 @@ const SensitiveDetailsPage = () => {
     const fetchSensitiveDetails = async () => {
       if (token) {
         try {
+          // If token exists, validate it
           const decoded = jwtDecode(token);  // Decode the token to check if it's expired
           const expirationTime = decoded.exp * 1000;  // Expiry time in milliseconds
           const currentTime = Date.now();
@@ -40,7 +41,7 @@ const SensitiveDetailsPage = () => {
           setError('Failed to fetch sensitive details.');
         }
       } else if (userId) {
-        // For external users (no token), check emergencyContactApproval
+        // If the user is external (no token), check if they have been approved by the emergency contact
         try {
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
 
@@ -51,7 +52,7 @@ const SensitiveDetailsPage = () => {
             const { emergencyContactApproved, sensitiveDetails } = response.data;
 
             if (emergencyContactApproved) {
-              // If emergency contact approved, show sensitive details even without token
+              // If emergency contact is approved, display the sensitive details even without a token
               setAllergies(sensitiveDetails.allergies);
               setDiseases(sensitiveDetails.diseases);
               setMedicalReports(sensitiveDetails.medicalReports);
@@ -66,7 +67,8 @@ const SensitiveDetailsPage = () => {
           setError('Error checking access status.');
         }
       } else {
-        navigate('/request-emergency-access');  // If neither token nor userId is found, redirect to request access page
+        // If no token and no userId, redirect to request access page
+        navigate('/request-emergency-access');
       }
     };
 
