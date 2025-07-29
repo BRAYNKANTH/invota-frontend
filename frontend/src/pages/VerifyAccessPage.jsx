@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const VerifyAccessPage = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const location = useLocation();  // Get location object from React Router
-  const history = useHistory();  // For redirecting after success
+  const navigate = useNavigate();  // For redirecting after success
 
   useEffect(() => {
     console.log('VerifyAccessPage: useEffect triggered');  // Debug log for useEffect
 
     // Extract token from the URL hash fragment (after the `#`)
-    const hashToken = location.hash.split('/')[2];  // Extract the token from the hash fragment
+    const hashToken = location.hash.split('#/verify-access/')[1];  // Correctly extract the token from hash
     console.log('VerifyAccessPage: location.hash:', location.hash);  // Log the entire location.hash
     console.log('VerifyAccessPage: Extracted token from URL hash:', hashToken);  // Log token
 
@@ -43,10 +43,11 @@ const VerifyAccessPage = () => {
           // Redirect to sensitive details page or show the data
           setTimeout(() => {
             console.log('VerifyAccessPage: Redirecting to /view-sensitive-details');
-            history.push('/view-sensitive-details');  // Redirect after success
+            navigate('/view-sensitive-details');  // Use navigate() instead of history.push()
           }, 2000);
         } else {
           console.log('VerifyAccessPage: Unexpected response status:', response.status);
+          setError('Unexpected response status: ' + response.status);
         }
       } catch (err) {
         setError('Error verifying the token');
@@ -58,7 +59,7 @@ const VerifyAccessPage = () => {
 
     console.log('VerifyAccessPage: Token received, calling verifyToken...');
     verifyToken();  // Call the verifyToken function on mount
-  }, [location.hash, history]);  // Re-run the effect if the hash changes
+  }, [location.hash, navigate]);  // Re-run the effect if the hash changes
 
   return (
     <div>
