@@ -3,7 +3,7 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  color: #fff;
+  color: #000000; /* Change default text color to black */
   background-image: url('logo.png'); /* Add your background image URL */
   background-size: cover;
   background-position: center;
@@ -32,11 +32,11 @@ body::before {
 }
 
 .glassy-container {
-  background: rgba(255, 255, 255, 0.3); /* Glassy effect */
+  background: rgba(255, 255, 255, 0.4); /* Glassy effect */
   backdrop-filter: blur(12px);
   padding: 40px;
   border-radius: 15px;
-  text-align: center;
+  text-align: left; /* Align text to the left */
   width: 80%;
   max-width: 500px;
   margin: 0 auto;
@@ -46,7 +46,7 @@ body::before {
 h2 {
   font-size: 2.8rem; /* Larger size for the heading */
   margin-bottom: 20px;
-  color: #fff;
+  color: #000000; /* Heading text color set to black */
   font-weight: bold;
 }
 
@@ -90,6 +90,7 @@ h2 {
   font-size: 1.2rem;
   color: #ff3333; /* Red for error */
   margin-bottom: 15px;
+  text-align: left; /* Align error message to the left */
 }
 
 /* Mobile Responsiveness */
