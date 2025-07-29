@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './RequestEmergencyAccessPage.css';  // Custom CSS for this page
 
 const RequestEmergencyAccessPage = () => {
   const [accessStatus, setAccessStatus] = useState('');
@@ -10,12 +11,10 @@ const RequestEmergencyAccessPage = () => {
   const location = useLocation();
   const { userId } = location.state || {};
 
-  // Log the userId received from the location
   useEffect(() => {
     console.log("Component mounted, userId from location:", userId);
   }, [userId]);
 
-  // Function to handle emergency access request
   const handleRequest = async (e) => {
     e.preventDefault();
 
@@ -25,57 +24,58 @@ const RequestEmergencyAccessPage = () => {
       return;
     }
 
-    console.log('Sending request with userId:', userId); // Debug log
+    console.log('Sending request with userId:', userId); 
 
     try {
       const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/request-emergency-access', { userId });
-      console.log('Response from request-emergency-access:', response); // Debug log
+      console.log('Response from request-emergency-access:', response); 
 
       if (response.status === 200) {
         setAccessStatus('Access request sent to the emergency contact. They will receive a link to verify access.');
         console.log('Access request sent successfully');
-        setChecking(true); // Start checking for access approval
+        setChecking(true); 
       }
     } catch (error) {
-      console.error('Error while requesting emergency access:', error); // Log the error details
+      console.error('Error while requesting emergency access:', error);
       setError(error.response?.data?.message || 'Failed to request emergency access');
     }
   };
 
-  // Effect to periodically check if access is approved
   useEffect(() => {
     if (!checking || !userId) return;
 
     const interval = setInterval(async () => {
       try {
-        console.log('Checking for access approval...'); // Debug log
+        console.log('Checking for access approval...');
         const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/check-access', { userId });
-        console.log('Response from check-access:', response); // Debug log
+        console.log('Response from check-access:', response);
 
         if (response.status === 200 && response.data.accessGranted) {
-          clearInterval(interval);  // Stop checking once access is granted
+          clearInterval(interval); 
           setAccessStatus('Access granted! Redirecting...');
           console.log('Access granted, redirecting to sensitive details...');
           setTimeout(() => navigate(`/view-sensitive-details/${userId}`), 2000);
         }
       } catch (err) {
-        console.log("Access not granted yet or expired", err);  // Log error if access isn't granted yet
+        console.log("Access not granted yet or expired", err);
       }
-    }, 5000); // Check every 5 seconds
+    }, 5000); 
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [checking, userId, navigate]);
 
   return (
-    <div>
-      <h2>Request Emergency Access</h2>
+    <div className="access-container">
+      <div className="glassy-container">
+        <h2 className="text-center text-white mb-4">Request Emergency Access</h2>
 
-      {error && <p className="text-danger">{error}</p>}
-      {accessStatus && <p className="text-success">{accessStatus}</p>}
+        {error && <p className="text-danger">{error}</p>}
+        {accessStatus && <p className="text-success">{accessStatus}</p>}
 
-      <form onSubmit={handleRequest}>
-        <button type="submit" className="btn btn-primary">Request Access</button>
-      </form>
+        <form onSubmit={handleRequest}>
+          <button type="submit" className="btn btn-primary w-100">Request Access</button>
+        </form>
+      </div>
     </div>
   );
 };

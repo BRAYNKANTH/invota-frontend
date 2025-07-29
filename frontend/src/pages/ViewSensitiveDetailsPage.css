@@ -24,7 +24,7 @@ body::before {
 }
 
 /* Glassy Effect Container */
-.login-container {
+.view-details-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +38,7 @@ body::before {
   border-radius: 15px;
   text-align: center;
   width: 80%;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }

@@ -31,46 +31,45 @@ const BasicDetailsPage = () => {
     }
   }, [token, navigate]);
 
- const handleUpdate = async (e) => {
-  e.preventDefault();
+  const handleUpdate = async (e) => {
+    e.preventDefault();
 
-  // Ensure that all fields are filled before proceeding
-  if (!fullName || !address || !phoneNumber || !bloodGroup || !photo || !emergencyContactEmail) {
-    setError('All fields are required.');
-    return;
-  }
+    // Ensure that all fields are filled before proceeding
+    if (!fullName || !address || !phoneNumber || !bloodGroup || !photo || !emergencyContactEmail) {
+      setError('All fields are required.');
+      return;
+    }
 
-  try {
-    // Sending the updated details, including emergencyContactEmail, to the backend
-    const response = await axios.put(
-      'https://invota-backend-production.up.railway.app/api/auth/update-basic-details',
-      {
-        fullName,
-        address,
-        phoneNumber,
-        bloodGroup,
-        photo,
-        emergencyContactEmail,  // Send emergency contact email
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,  // Send token for authentication
+    try {
+      // Sending the updated details, including emergencyContactEmail, to the backend
+      const response = await axios.put(
+        'https://invota-backend-production.up.railway.app/api/auth/update-basic-details',
+        {
+          fullName,
+          address,
+          phoneNumber,
+          bloodGroup,
+          photo,
+          emergencyContactEmail,  // Send emergency contact email
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // Send token for authentication
+          },
+        }
+      );
 
-    console.log('Update successful:', response.data);
-    navigate('/update-sensitive-details');  // Redirect after successful update
-  } catch (error) {
-    console.error('Error updating public details:', error.response?.data || error);
-    alert('Failed to update details');
-  }
-};
-
+      console.log('Update successful:', response.data);
+      navigate('/update-sensitive-details');  // Redirect after successful update
+    } catch (error) {
+      console.error('Error updating public details:', error.response?.data || error);
+      alert('Failed to update details');
+    }
+  };
 
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-glass">
-      <div className="card shadow-lg p-4 rounded">
+    <div className="login-container">
+      <div className="glassy-container">
         <h2 className="text-center text-white mb-4">Update Basic Details</h2>
         {error && <p className="error-message text-center text-danger">{error}</p>}
         <form onSubmit={handleUpdate}>

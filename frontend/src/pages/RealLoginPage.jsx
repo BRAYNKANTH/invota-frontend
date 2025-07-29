@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import './RealLoginPage.css'; // Import custom styles for this page
+import './RealLoginPage.css'; // Import custom CSS
 
 const RealLoginPage = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
@@ -52,9 +51,9 @@ const RealLoginPage = () => {
   };
 
   return (
-    <div className="login-container d-flex justify-content-center align-items-center min-vh-100 bg-glass">
-      <div className="card shadow-lg p-4 rounded">
-        <h2 className="text-center mb-4 text-white">Login</h2>
+    <div className="login-container">
+      <div className="glassy-container">
+        <h2 className="text-center text-white">Login</h2>
         {error && <p className="error-message text-center text-danger">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="form-group mb-3">
@@ -81,7 +80,7 @@ const RealLoginPage = () => {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Login</button>
+          <button type="submit" className="btn-login w-100">Login</button>
         </form>
       </div>
     </div>
