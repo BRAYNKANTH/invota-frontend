@@ -15,7 +15,8 @@ const SensitiveDetailsPage = () => {
   useEffect(() => {
     const fetchSensitiveDetails = async () => {
       console.log('Fetching sensitive details...');
-      
+
+      // If token exists (for logged-in users)
       if (token) {
         console.log('Token found. Validating...');
         
@@ -48,9 +49,9 @@ const SensitiveDetailsPage = () => {
           setError('Failed to fetch sensitive details.');
         }
       } else if (userId) {
+        // If no token, check for external user using userId
         console.log('No token found. Checking for external user with userId:', userId);
-        
-        // If the user is external (no token), check if they have been approved by the emergency contact
+
         try {
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
 
@@ -81,6 +82,7 @@ const SensitiveDetailsPage = () => {
           setError('Error checking access status.');
         }
       } else {
+        // If neither token nor userId is found, redirect to request access page
         console.log('No token and no userId found. Redirecting to request access page...');
         navigate('/request-emergency-access');
       }
