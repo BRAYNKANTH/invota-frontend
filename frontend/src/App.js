@@ -42,9 +42,10 @@ function App() {
         <Route path="/view-basic-details" element={<ViewBasicDetailsPage />} />
         <Route path="/verify-access/:token" element={<VerifyAccessPage />} />
 
-        {/* Sensitive Details Routes */}
-        <Route path="/view-sensitive-details/:userId" element={<ViewSensitiveDetailsPage />} />
-        <Route path="/view-sensitive-details" element={<ViewSensitiveDetailsPage />} />
+    
+
+        <Route path="/view-sensitive-details/:userId" element={<SensitiveDetailsPage />} />
+<Route path="/view-sensitive-details" element={<SensitiveDetailsPage />} />
       </Routes>
     </Router>
   );
