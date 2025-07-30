@@ -81,11 +81,23 @@ const ViewBasicDetailsPage = () => {
     }
   };
 
+  // Button to go to login page
+  const handleLoginRedirect = () => {
+    navigate('/login');  // Redirect to login page
+  };
+
   if (!publicDetails) return <div>Loading...</div>;  // Show loading while data is fetched
 
   return (
     <div className="view-details-container">
       <div className="glassy-container">
+        {/* Login button in the top-right corner */}
+        <button 
+          className="btn btn-secondary position-absolute top-0 end-0 m-3" 
+          onClick={handleLoginRedirect}>
+          Login
+        </button>
+
         <h2 className="text-center text-white mb-4">Public Details</h2>
         {/* Table for displaying public details */}
         <table className="table table-bordered table-striped">

@@ -1,93 +1,87 @@
-
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import './ViewSensitiveDetailsPage.css';  // Custom CSS for this page
+import './SensitiveDetailsPage.css';  // Custom CSS for this page
 
-const ViewSensitiveDetailsPage = () => {
+const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
   const [diseases, setDiseases] = useState('');
   const [medicalReports, setMedicalReports] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const token = localStorage.getItem('authToken');  // Token from localStorage
-  const userId = new URLSearchParams(window.location.search).get('userId');  // For external users
+  const location = useLocation();  // Access location state
+  const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
+  const userId = location.state?.userId;  // Get userId passed from previous page via location.state
 
   useEffect(() => {
     const fetchSensitiveDetails = async () => {
       console.log('Fetching sensitive details...');
 
-      // If the user is logged in (token exists)
       if (token) {
+        // Token exists, logged-in user
         console.log('Token found. Validating...');
         try {
-          const decoded = jwtDecode(token);  // Decode token to check expiration
+          const decoded = jwtDecode(token);
           const expirationTime = decoded.exp * 1000;
           const currentTime = Date.now();
 
-          // Token expiration check
           if (currentTime > expirationTime) {
-            console.log('Token has expired.');
+            // If the token is expired, log out and redirect to login
+            console.log('Token has expired');
             localStorage.removeItem('authToken');
             navigate('/login');
             return;
           }
 
-          // Fetch sensitive details for logged-in user
+          // Fetch details for logged-in user
           const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details', {
             headers: { Authorization: `Bearer ${token}` },
           });
 
-          console.log('Fetched sensitive details for logged-in user:', response.data);
           const { sensitiveDetails, emergencyContactApproved } = response.data;
 
-          // Check if emergency contact is approved
           if (emergencyContactApproved) {
             setAllergies(sensitiveDetails.allergies);
             setDiseases(sensitiveDetails.diseases);
             setMedicalReports(sensitiveDetails.medicalReports);
           } else {
             setError('Emergency contact not approved. Please request access.');
-            navigate('/request-emergency-access');  // Redirect to the request access page
+            navigate('/request-emergency-access'); // Redirect to request access page
           }
         } catch (error) {
           console.error('Error fetching sensitive details:', error);
           setError('Failed to fetch sensitive details.');
-          navigate('/landing');  // Redirect to the landing page on error
         }
-      } 
-      // Handle external user (no token, but userId is provided)
-      else if (userId) {
-        console.log('No token found. Checking for external user with userId:', userId);
+      } else if (userId) {
+        // External user (no token, but userId passed via location.state)
+        console.log('Fetching sensitive details for external user with userId:', userId);
 
         try {
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
-          console.log('External user response:', response.data);
 
           if (response.data.error) {
             setError(response.data.error);
-            navigate('/request-emergency-access', { state: { userId } });
+            navigate('/request-emergency-access', { state: { userId } }); // Redirect to request access
           } else {
-            const { emergencyContactApproved, sensitiveDetails } = response.data;
+            const { sensitiveDetails, emergencyContactApproved } = response.data;
 
-            // If emergency contact is approved, show sensitive details
             if (emergencyContactApproved) {
               setAllergies(sensitiveDetails.allergies);
               setDiseases(sensitiveDetails.diseases);
               setMedicalReports(sensitiveDetails.medicalReports);
             } else {
               setError('Emergency contact not approved. Please request access.');
-              navigate('/request-emergency-access', { state: { userId } });  // Redirect to request access page
+              navigate('/request-emergency-access', { state: { userId } }); // Redirect to request access
             }
           }
         } catch (error) {
-          console.error('Error checking external user access:', error);
-          setError('Error checking access status.');
-          navigate('/request-emergency-access');  // Redirect if any error occurs
+          console.error('Error fetching sensitive details for external user:', error);
+          setError('Error fetching sensitive details.');
+          navigate('/request-emergency-access'); // Redirect if error occurs
         }
       } else {
-        // If no token or userId, redirect to request access page
+        // If no token or userId found, redirect to request access page
         navigate('/request-emergency-access');
       }
     };
@@ -99,7 +93,7 @@ const ViewSensitiveDetailsPage = () => {
     <div className="view-details-container">
       <div className="glassy-container">
         <h2 className="text-center text-white mb-4">View Sensitive Details</h2>
-        {error && <p className="error-message text-center text-danger">{error}</p>}
+        {error && <p className="text-center text-danger">{error}</p>}
         <p><strong>Allergies:</strong> {allergies}</p>
         <p><strong>Diseases:</strong> {diseases}</p>
         <p><strong>Medical Reports:</strong> {medicalReports}</p>
@@ -108,4 +102,4 @@ const ViewSensitiveDetailsPage = () => {
   );
 };
 
-export default ViewSensitiveDetailsPage;
+export default SensitiveDetailsPage;
