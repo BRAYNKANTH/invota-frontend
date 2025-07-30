@@ -4,15 +4,15 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import './SensitiveDetailsPage.css';  // Custom CSS for this page
 
-const SensitiveDetailsPage = () => {
+const ViewSensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
   const [diseases, setDiseases] = useState('');
   const [medicalReports, setMedicalReports] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  // Access location state
   const token = localStorage.getItem('authToken');
-  const userId = location.state?.userId;
+  const userId = location.state?.userId;  // Access userId from previous page via location.state
 
   useEffect(() => {
     const fetchSensitiveDetails = async () => {
@@ -41,7 +41,6 @@ const SensitiveDetailsPage = () => {
             headers: { Authorization: `Bearer ${token}` },
           });
 
-          console.log('Fetched sensitive details for logged-in user:', response.data);
           const { sensitiveDetails, emergencyContactApproved } = response.data;
           console.log('Emergency contact approved:', emergencyContactApproved);
 
@@ -109,4 +108,4 @@ const SensitiveDetailsPage = () => {
   );
 };
 
-export default SensitiveDetailsPage;
+export default ViewSensitiveDetailsPage;
