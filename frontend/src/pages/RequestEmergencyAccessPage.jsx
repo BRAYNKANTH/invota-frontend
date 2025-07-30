@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './RequestEmergencyAccessPage.css';  // Custom CSS for this page
 
@@ -10,9 +10,11 @@ const RequestEmergencyAccessPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const userId = location.state?.userId; // Get userId from location state (from previous page)
+  // Retrieve userId from location state passed via navigate
+  const userId = location.state?.userId;
 
   useEffect(() => {
+    // Check if userId is available; otherwise, navigate to landing page
     if (!userId) {
       setError('User ID is missing');
       console.log('Error: User ID is missing');
