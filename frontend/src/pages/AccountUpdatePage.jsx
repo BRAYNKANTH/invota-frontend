@@ -39,7 +39,7 @@ const AccountUpdatePage = () => {
 
       if (response.status === 200) {
         alert('Account updated successfully');
-        navigate('/basic-details');  // Redirect to basic details page after success
+        navigate('/login');  // Redirect to basic details page after success
       }
     } catch (error) {
       console.error('Error updating account:', error);
