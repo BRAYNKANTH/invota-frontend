@@ -26,7 +26,7 @@ body::before {
 /* Glassy Effect Container */
 .view-details-container {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
  min-height: 100vh; /* Ensures the form is vertically centered */
   flex-direction: column;
@@ -38,7 +38,7 @@ body::before {
   backdrop-filter: blur(12px);
   padding: 40px;
   border-radius: 15px;
-  text-align: center;
+  text-align: left;
   width: 80%;
   max-width: 600px;
   margin: 0 auto;
