@@ -9,7 +9,6 @@ const BasicDetailsPage = () => {
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
-  const [photo, setPhoto] = useState(null);  // Store file object
   const [emergencyContactEmail, setEmergencyContactEmail] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);  // Loading state
@@ -35,7 +34,7 @@ const BasicDetailsPage = () => {
     e.preventDefault();
 
     // Ensure that all fields are filled before proceeding
-    if (!fullName || !address || !phoneNumber || !bloodGroup || !photo || !emergencyContactEmail) {
+    if (!fullName || !address || !phoneNumber || !bloodGroup  || !emergencyContactEmail) {
       setError('All fields are required.');
       return;
     }
@@ -55,7 +54,7 @@ const BasicDetailsPage = () => {
     formData.append('phoneNumber', phoneNumber);
     formData.append('bloodGroup', bloodGroup);
     formData.append('emergencyContactEmail', emergencyContactEmail);
-    formData.append('photo', photo);  // Append the photo file
+    
 
     try {
       // Sending the updated details, including emergencyContactEmail, to the backend
@@ -143,17 +142,7 @@ const BasicDetailsPage = () => {
             />
           </div>
 
-          <div className="form-group mb-3">
-            <label htmlFor="photo" className="text-white">Upload Photo:</label>
-            <input
-              type="file"
-              id="photo"
-              name="photo"
-              className="form-control"
-              onChange={(e) => setPhoto(e.target.files[0])}  // Store the selected file
-              required
-            />
-          </div>
+          
 
           <div className="form-group mb-3">
             <label htmlFor="emergencyContactEmail" className="text-white">Emergency Contact Email:</label>

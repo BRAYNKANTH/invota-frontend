@@ -120,7 +120,7 @@ const ViewBasicDetailsPage = () => {
             </tr>
           </tbody>
         </table>
-        <img src={publicDetails.photo} alt="Profile" className="img-fluid mb-3" />
+  
         <div className="text-center mt-4">
           <button onClick={handleViewSensitiveDetails} className="btn btn-primary btn-lg">
             View Sensitive Details
