@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import './SensitiveDetailsPage.css';  // Custom CSS for this page
+import './ViewSensitiveDetailsPage.css';  // Custom CSS for this page
 
 const ViewSensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
@@ -10,8 +10,8 @@ const ViewSensitiveDetailsPage = () => {
   const [medicalReports, setMedicalReports] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();  // Access location state
-  const token = localStorage.getItem('authToken');
+  const location = useLocation();
+  const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
   const userId = location.state?.userId;  // Access userId from previous page via location.state
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const ViewSensitiveDetailsPage = () => {
         // Token exists, logged-in user
         console.log('Token found. Validating...');
         try {
-          const decoded = jwtDecode(token);
+          const decoded = jwtDecode(token);  // Decode the token
           console.log('Decoded token:', decoded);
 
           const expirationTime = decoded.exp * 1000;
@@ -41,17 +41,13 @@ const ViewSensitiveDetailsPage = () => {
             headers: { Authorization: `Bearer ${token}` },
           });
 
-          const { sensitiveDetails, emergencyContactApproved } = response.data;
-          console.log('Emergency contact approved:', emergencyContactApproved);
+          const { sensitiveDetails } = response.data;
+          console.log('Fetched sensitive details for logged-in user:', sensitiveDetails);
 
-          if (emergencyContactApproved) {
-            setAllergies(sensitiveDetails.allergies);
-            setDiseases(sensitiveDetails.diseases);
-            setMedicalReports(sensitiveDetails.medicalReports);
-          } else {
-            setError('Emergency contact not approved. Please request access.');
-            navigate('/request-emergency-access');
-          }
+          // Set the sensitive details values
+          setAllergies(sensitiveDetails.allergies);
+          setDiseases(sensitiveDetails.diseases);
+          setMedicalReports(sensitiveDetails.medicalReports);
         } catch (error) {
           console.error('Error fetching sensitive details:', error);
           setError('Failed to fetch sensitive details.');
@@ -67,20 +63,13 @@ const ViewSensitiveDetailsPage = () => {
           if (response.data.error) {
             setError(response.data.error);
             navigate('/request-emergency-access', { state: { userId } });
-            console.log('Error fetching external user details:', response.data.error);
           } else {
-            const { sensitiveDetails, emergencyContactApproved } = response.data;
-            console.log('Emergency contact approved:', emergencyContactApproved);
+            const { sensitiveDetails } = response.data;
+            console.log('Fetched sensitive details for external user:', sensitiveDetails);
 
-            if (emergencyContactApproved) {
-              setAllergies(sensitiveDetails.allergies);
-              setDiseases(sensitiveDetails.diseases);
-              setMedicalReports(sensitiveDetails.medicalReports);
-            } else {
-              setError('Emergency contact not approved. Please request access.');
-              navigate('/request-emergency-access', { state: { userId } });
-              console.log('Emergency contact not approved for external user, redirecting to request access');
-            }
+            setAllergies(sensitiveDetails.allergies);
+            setDiseases(sensitiveDetails.diseases);
+            setMedicalReports(sensitiveDetails.medicalReports);
           }
         } catch (error) {
           console.error('Error fetching sensitive details for external user:', error);
