@@ -62,42 +62,61 @@ const ViewBasicDetailsPage = () => {
     }
   };
 
+  const handleLoginRedirect = () => {
+    navigate('/login');  // Redirect to login page
+  };
+
   if (!publicDetails) return <div>Loading...</div>;  // Show loading while data is fetched
 
   return (
     <div className="view-details-container">
       <div className="glassy-container">
+        {/* Login button in the top-right corner */}
+        <button 
+          className="btn btn-secondary position-absolute top-0 end-0 m-3" 
+          onClick={handleLoginRedirect}>
+          Login
+        </button>
+
         <h2 className="text-center text-white mb-4">Public Details</h2>
         <table className="table table-bordered table-striped">
           <tbody>
-            <tr>
-              <td><strong>Full Name:</strong></td>
-              <td>{publicDetails.fullName}</td>
-            </tr>
-            <tr>
-              <td><strong>Address:</strong></td>
-              <td>{publicDetails.address}</td>
-            </tr>
-            <tr>
-              <td><strong>Phone Number:</strong></td>
-              <td>{publicDetails.phoneNumber}</td>
-            </tr>
-            <tr>
-              <td><strong>Blood Group:</strong></td>
-              <td>{publicDetails.bloodGroup}</td>
-            </tr>
-            <tr>
-              <td><strong>Emergency Contact Email:</strong></td>
-              <td>{publicDetails.emergency}</td>
-            </tr>
-            <tr>
-              <td><strong>Age:</strong></td>
-              <td>{publicDetails.age}</td>
-            </tr>
-            <tr>
-              <td><strong>Gender:</strong></td>
-              <td>{publicDetails.gender}</td>
-            </tr>
+     <tr>
+  <td><strong>Full Name:</strong></td>
+  <td>{publicDetails.fullName}</td>
+</tr>
+<tr>
+  <td><strong>Address:</strong></td>
+  <td>{publicDetails.address}</td>
+</tr>
+<tr>
+  <td><strong>Phone Number:</strong></td>
+  <td>{publicDetails.phoneNumber}</td>
+</tr>
+<tr>
+  <td><strong>Age:</strong></td>
+  <td>{publicDetails.age}</td>
+</tr>
+<tr>
+  <td><strong>Gender:</strong></td>
+  <td>{publicDetails.gender}</td>
+</tr>
+<tr>
+  <td><strong>Blood Group:</strong></td>
+  <td>{publicDetails.bloodGroup}</td>
+</tr>
+
+{/* Separate the Emergency Contact Email and Number */}
+<tr>
+  <td><strong>Emergency Contact Email:</strong></td>
+  <td>{publicDetails.emergencyContactEmail}</td>
+</tr>
+<tr>
+  <td><strong>Emergency Contact Number:</strong></td>
+  <td>{publicDetails.emergencyContactNumber}</td>
+</tr>
+
+           
           </tbody>
         </table>
         <div className="text-center mt-4">
