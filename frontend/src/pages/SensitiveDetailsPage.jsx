@@ -7,7 +7,7 @@ import './SensitiveDetailsPage.css';  // Custom CSS for this page
 const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
   const [diseases, setDiseases] = useState('');
-  const [medicalReports, setMedicalReports] = useState([]);
+  const [medicalReports, setMedicalReports] = useState([]); // Array to hold the selected files
   const [error, setError] = useState('');  // For handling errors
   const navigate = useNavigate();
   const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
@@ -71,32 +71,10 @@ const SensitiveDetailsPage = () => {
   }, [token, userId, navigate]);
 
   // Handle file upload for medical reports
-  const handleMedicalReportsUpload = async (e) => {
+  const handleMedicalReportsUpload = (e) => {
     const files = e.target.files;
-    const formData = new FormData();
-
-    // Append each file to the form data
-    Array.from(files).forEach(file => {
-      formData.append('medicalReports', file);
-    });
-
-    try {
-      const response = await axios.post(
-        'https://invota-backend-production.up.railway.app/api/auth/upload-medical-reports',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log('Medical reports upload response:', response);  // Log the response to debug
-      setMedicalReports(response.data.fileUrls); // Set returned file URLs
-    } catch (error) {
-      setError('Failed to upload medical reports.');
-      console.error('Error uploading medical reports:', error);  // Log the error
-    }
+    const fileArray = Array.from(files);
+    setMedicalReports(fileArray);  // Store the selected files
   };
 
   const handleUpdate = async (e) => {
@@ -107,16 +85,25 @@ const SensitiveDetailsPage = () => {
       return;
     }
 
+    // Prepare FormData for sending medical reports and form fields together
+    const formData = new FormData();
+    formData.append('allergies', allergies);
+    formData.append('diseases', diseases);
+
+    // Append each selected medical report file to FormData
+    medicalReports.forEach(file => {
+      formData.append('medicalReports', file);
+    });
+
     try {
       const response = await axios.put(
         'https://invota-backend-production.up.railway.app/api/auth/update-sensitive-details',
+        formData,
         {
-          allergies,
-          diseases,
-          medicalReports,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log('Update response:', response);  // Log the response to debug
@@ -171,10 +158,8 @@ const SensitiveDetailsPage = () => {
               <div className="mt-2">
                 <h6>Uploaded Reports:</h6>
                 <ul>
-                  {medicalReports.map((url, index) => (
-                    <li key={index}>
-                      <a href={url} target="_blank" rel="noopener noreferrer">Report {index + 1}</a>
-                    </li>
+                  {medicalReports.map((file, index) => (
+                    <li key={index}>{file.name}</li>
                   ))}
                 </ul>
               </div>
