@@ -10,6 +10,7 @@ const RequestEmergencyAccessPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Ensure the userId is correctly passed from the previous page
   const userId = location.state?.userId;
   console.log('Received userId:', userId);  // Debug log for userId
 
@@ -26,7 +27,7 @@ const RequestEmergencyAccessPage = () => {
   const handleRequest = async (e) => {
     e.preventDefault();
 
-    // Ensure userId is available
+    // Ensure userId is available before sending the request
     if (!userId) {
       setError('User ID is missing');
       console.log('Error: User ID is missing');
