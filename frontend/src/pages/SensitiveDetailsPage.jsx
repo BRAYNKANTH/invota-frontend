@@ -154,16 +154,26 @@ const SensitiveDetailsPage = () => {
               multiple
               onChange={handleMedicalReportsUpload}
             />
-            {medicalReports.length > 0 && (
-              <div className="mt-2">
-                <h6>Uploaded Reports:</h6>
-                <ul>
-                  {medicalReports.map((file, index) => (
-                    <li key={index}>{file.name}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+           {medicalReports.length > 0 && (
+  <div className="mt-2">
+    <h6>Uploaded Reports:</h6>
+    <ul>
+      {medicalReports.map((file, index) => (
+        <li key={index}>
+          {/* Render the clickable link for each medical report */}
+          <a 
+            href={`https://invota-backend-production.up.railway.appd${file}`}  // Assuming `file` contains the relative path to the file
+            target="_blank" 
+            rel="noopener noreferrer">
+            Report {index + 1}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+              
           </div>
 
           <button type="submit" className="btn btn-primary w-100">Update Sensitive Details</button>
