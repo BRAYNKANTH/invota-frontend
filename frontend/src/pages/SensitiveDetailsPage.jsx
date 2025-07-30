@@ -43,7 +43,7 @@ const SensitiveDetailsPage = () => {
           console.log('Sensitive details response:', response);  // Log the response to debug
           setAllergies(response.data.sensitiveDetails.allergies);
           setDiseases(response.data.sensitiveDetails.diseases);
-          setMedicalReports(response.data.sensitiveDetails.medicalReports);
+          setMedicalReports(response.data.sensitiveDetails.medicalReports); // Set the medical reports URLs
         } catch (error) {
           setError('Failed to fetch sensitive details.');
           console.error('Error fetching sensitive details:', error);  // Log the error
@@ -57,7 +57,7 @@ const SensitiveDetailsPage = () => {
         if (emergencyContactApproved) {
           setAllergies(sensitiveDetails.allergies);
           setDiseases(sensitiveDetails.diseases);
-          setMedicalReports(sensitiveDetails.medicalReports);
+          setMedicalReports(sensitiveDetails.medicalReports);  // Set the medical reports URLs
         } else {
           setError('Access not approved. Please request emergency access.');
           navigate('/request-emergency-access', { state: { userId } });
@@ -106,7 +106,12 @@ const SensitiveDetailsPage = () => {
           },
         }
       );
+      
       console.log('Update response:', response);  // Log the response to debug
+
+      // Assuming the response contains the URLs of the uploaded medical reports
+      setMedicalReports(response.data.medicalReports);  // Update the medicalReports with URLs
+
       navigate('/view-basic-details');
     } catch (error) {
       setError('Failed to update sensitive details');
@@ -154,26 +159,24 @@ const SensitiveDetailsPage = () => {
               multiple
               onChange={handleMedicalReportsUpload}
             />
-           {medicalReports.length > 0 && (
-  <div className="mt-2">
-    <h6>Uploaded Reports:</h6>
-    <ul>
-      {medicalReports.map((file, index) => (
-        <li key={index}>
-          {/* Render the clickable link for each medical report */}
-          <a 
-            href={`https://invota-backend-production.up.railway.app${file}`}  // Assuming `file` contains the relative path to the file
-            target="_blank" 
-            rel="noopener noreferrer">
-            Report {index + 1}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
-
-              
+            {medicalReports.length > 0 && (
+              <div className="mt-2">
+                <h6>Uploaded Reports:</h6>
+                <ul>
+                  {medicalReports.map((file, index) => (
+                    <li key={index}>
+                      {/* Render the clickable link for each medical report */}
+                      <a 
+                        href={`https://invota-backend-production.up.railway.app${file}`}  // Assuming `file` contains the relative path to the file
+                        target="_blank" 
+                        rel="noopener noreferrer">
+                        Report {index + 1}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <button type="submit" className="btn btn-primary w-100">Update Sensitive Details</button>
