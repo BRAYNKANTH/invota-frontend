@@ -23,8 +23,11 @@ const SensitiveDetailsPage = () => {
         console.log('Token found. Validating...');
         try {
           const decoded = jwtDecode(token);
-          const expirationTime = decoded.exp * 1000;
+          console.log('Decoded token:', decoded);  // Log the decoded token
+          
+          const expirationTime = decoded.exp * 1000;  // Expiry time in milliseconds
           const currentTime = Date.now();
+          console.log('Current time:', currentTime, 'Expiration time:', expirationTime);  // Log both current time and token expiration time
 
           if (currentTime > expirationTime) {
             // If the token is expired, log out and redirect to login
@@ -34,13 +37,19 @@ const SensitiveDetailsPage = () => {
             return;
           }
 
+          console.log('Token is valid. Fetching sensitive details for logged-in user...');
+
           // Fetch details for logged-in user
           const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details', {
             headers: { Authorization: `Bearer ${token}` },
           });
 
-          const { sensitiveDetails, emergencyContactApproved } = response.data;
+          console.log('Fetched sensitive details for logged-in user:', response.data);  // Log the response
 
+          const { sensitiveDetails, emergencyContactApproved } = response.data;
+          console.log('Emergency contact approved:', emergencyContactApproved);  // Log if emergency contact is approved
+
+          // If emergency contact is approved, show the details
           if (emergencyContactApproved) {
             setAllergies(sensitiveDetails.allergies);
             setDiseases(sensitiveDetails.diseases);
@@ -48,6 +57,7 @@ const SensitiveDetailsPage = () => {
           } else {
             setError('Emergency contact not approved. Please request access.');
             navigate('/request-emergency-access'); // Redirect to request access page
+            console.log('Emergency contact not approved, redirecting to request access');
           }
         } catch (error) {
           console.error('Error fetching sensitive details:', error);
@@ -60,12 +70,17 @@ const SensitiveDetailsPage = () => {
         try {
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
 
+          console.log('Fetched sensitive details for external user:', response.data);  // Log the response
+
           if (response.data.error) {
             setError(response.data.error);
             navigate('/request-emergency-access', { state: { userId } }); // Redirect to request access
+            console.log('Error fetching external user details:', response.data.error);
           } else {
             const { sensitiveDetails, emergencyContactApproved } = response.data;
+            console.log('Emergency contact approved:', emergencyContactApproved);  // Log if emergency contact is approved
 
+            // If emergency contact is approved, show the sensitive details
             if (emergencyContactApproved) {
               setAllergies(sensitiveDetails.allergies);
               setDiseases(sensitiveDetails.diseases);
@@ -73,15 +88,18 @@ const SensitiveDetailsPage = () => {
             } else {
               setError('Emergency contact not approved. Please request access.');
               navigate('/request-emergency-access', { state: { userId } }); // Redirect to request access
+              console.log('Emergency contact not approved for external user, redirecting to request access');
             }
           }
         } catch (error) {
           console.error('Error fetching sensitive details for external user:', error);
           setError('Error fetching sensitive details.');
           navigate('/request-emergency-access'); // Redirect if error occurs
+          console.log('Error occurred while fetching external user sensitive details, redirecting to request access');
         }
       } else {
         // If no token or userId found, redirect to request access page
+        console.log('No token or userId found, redirecting to request access');
         navigate('/request-emergency-access');
       }
     };
@@ -92,8 +110,8 @@ const SensitiveDetailsPage = () => {
   return (
     <div className="view-details-container">
       <div className="glassy-container">
-        <h2 className="text-center text-white mb-4">View Sensitive Details</h2>
-        {error && <p className="text-center text-danger">{error}</p>}
+        <h2 className="text-center text-white mb-4">Sensitive Details</h2>
+        {error && <p className="text-danger">{error}</p>}
         <p><strong>Allergies:</strong> {allergies}</p>
         <p><strong>Diseases:</strong> {diseases}</p>
         <p><strong>Medical Reports:</strong> {medicalReports}</p>

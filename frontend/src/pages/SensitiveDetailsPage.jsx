@@ -127,11 +127,11 @@ const SensitiveDetailsPage = () => {
         <form onSubmit={handleUpdate}>
           <div className="form-group mb-3">
             <label htmlFor="allergies" className="text-white">Allergies:</label>
-            <input
-              type="text"
+            <textarea
               id="allergies"
               name="allergies"
               className="form-control"
+              rows="4"  // Define the number of rows for the textarea
               value={allergies}
               onChange={(e) => setAllergies(e.target.value)}
             />
@@ -139,11 +139,11 @@ const SensitiveDetailsPage = () => {
 
           <div className="form-group mb-3">
             <label htmlFor="diseases" className="text-white">Diseases:</label>
-            <input
-              type="text"
+            <textarea
               id="diseases"
               name="diseases"
               className="form-control"
+              rows="4"  // Define the number of rows for the textarea
               value={diseases}
               onChange={(e) => setDiseases(e.target.value)}
             />
