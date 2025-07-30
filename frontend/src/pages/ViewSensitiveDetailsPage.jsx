@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -53,6 +54,7 @@ const ViewSensitiveDetailsPage = () => {
         } catch (error) {
           console.error('Error fetching sensitive details:', error);
           setError('Failed to fetch sensitive details.');
+          navigate('/landing');  // Redirect to the landing page on error
         }
       } 
       // Handle external user (no token, but userId is provided)
@@ -76,7 +78,7 @@ const ViewSensitiveDetailsPage = () => {
               setMedicalReports(sensitiveDetails.medicalReports);
             } else {
               setError('Emergency contact not approved. Please request access.');
-              navigate('/request-emergency-access', { state: { userId } });  // Redirect to request access
+              navigate('/request-emergency-access', { state: { userId } });  // Redirect to request access page
             }
           }
         } catch (error) {
