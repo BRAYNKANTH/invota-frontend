@@ -13,7 +13,7 @@ const ViewBasicDetailsPage = () => {
   const fetchPublicDetails = useCallback(async (userId) => {
     try {
       const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-public-details/${userId}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},  // Send token if available
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
       // Check if the user is verified
@@ -81,42 +81,39 @@ const ViewBasicDetailsPage = () => {
         <h2 className="text-center text-white mb-4">Public Details</h2>
         <table className="table table-bordered table-striped">
           <tbody>
-     <tr>
-  <td><strong>Full Name:</strong></td>
-  <td>{publicDetails.fullName}</td>
-</tr>
-<tr>
-  <td><strong>Address:</strong></td>
-  <td>{publicDetails.address}</td>
-</tr>
-<tr>
-  <td><strong>Phone Number:</strong></td>
-  <td>{publicDetails.phoneNumber}</td>
-</tr>
-<tr>
-  <td><strong>Age:</strong></td>
-  <td>{publicDetails.age}</td>
-</tr>
-<tr>
-  <td><strong>Gender:</strong></td>
-  <td>{publicDetails.gender}</td>
-</tr>
-<tr>
-  <td><strong>Blood Group:</strong></td>
-  <td>{publicDetails.bloodGroup}</td>
-</tr>
-
-{/* Separate the Emergency Contact Email and Number */}
-<tr>
-  <td><strong>Emergency Contact Email:</strong></td>
-  <td>{publicDetails.emergencyContactEmail}</td>
-</tr>
-<tr>
-  <td><strong>Emergency Contact Number:</strong></td>
-  <td>{publicDetails.emergencyContactNumber}</td>
-</tr>
-
-           
+            <tr>
+              <td><strong>Full Name:</strong></td>
+              <td>{publicDetails.fullName}</td>
+            </tr>
+            <tr>
+              <td><strong>Address:</strong></td>
+              <td>{publicDetails.address}</td>
+            </tr>
+            <tr>
+              <td><strong>Phone Number:</strong></td>
+              <td>{publicDetails.phoneNumber}</td>
+            </tr>
+            <tr>
+              <td><strong>Age:</strong></td>
+              <td>{publicDetails.age}</td>
+            </tr>
+            <tr>
+              <td><strong>Gender:</strong></td>
+              <td>{publicDetails.gender}</td>
+            </tr>
+            <tr>
+              <td><strong>Blood Group:</strong></td>
+              <td>{publicDetails.bloodGroup}</td>
+            </tr>
+            {/* Emergency Contact */}
+            <tr>
+              <td><strong>Emergency Contact Email:</strong></td>
+              <td>{publicDetails.emergencyContactEmail}</td>
+            </tr>
+            <tr>
+              <td><strong>Emergency Contact Number:</strong></td>
+              <td>{publicDetails.emergencyContactNumber}</td>
+            </tr>
           </tbody>
         </table>
         <div className="text-center mt-4">
