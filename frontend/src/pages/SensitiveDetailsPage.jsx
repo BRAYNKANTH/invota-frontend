@@ -7,7 +7,7 @@ import './SensitiveDetailsPage.css';  // Custom CSS for this page
 const SensitiveDetailsPage = () => {
   const [allergies, setAllergies] = useState('');
   const [diseases, setDiseases] = useState('');
-  const [medicalReports, setMedicalReports] = useState('');
+  const [medicalReports, setMedicalReports] = useState([]);
   const [error, setError] = useState('');  // For handling errors
   const navigate = useNavigate();
   const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
@@ -27,12 +27,8 @@ const SensitiveDetailsPage = () => {
           const expirationTime = decoded.exp * 1000;  // Expiry time in milliseconds
           const currentTime = Date.now();
 
-          console.log('Token Expiration Time:', new Date(expirationTime));  // Log expiration time for debugging
-          console.log('Current Time:', new Date(currentTime));  // Log current time for debugging
-
           // If the token has expired, remove it and redirect to login
           if (currentTime > expirationTime) {
-            console.log('Token has expired.');
             localStorage.removeItem('authToken');
             navigate('/login');
             return;
@@ -44,46 +40,29 @@ const SensitiveDetailsPage = () => {
           const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details', {
             headers: { Authorization: `Bearer ${token}` },
           });
-          console.log('Fetched sensitive details for logged-in user:', response.data);
+          console.log('Sensitive details response:', response);  // Log the response to debug
           setAllergies(response.data.sensitiveDetails.allergies);
           setDiseases(response.data.sensitiveDetails.diseases);
           setMedicalReports(response.data.sensitiveDetails.medicalReports);
         } catch (error) {
-          console.error('Error fetching sensitive details:', error);
-          setError('Failed to fetch sensitive details.');  // Set error message
+          setError('Failed to fetch sensitive details.');
+          console.error('Error fetching sensitive details:', error);  // Log the error
         }
       } else if (userId) {
-        // If no token, check for external user using userId
-        console.log('No token found. Checking for external user with userId:', userId);
+        // Handle external user (no token)
+        const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
+        console.log('Sensitive details response for external user:', response);  // Log the response to debug
+        const { emergencyContactApproved, sensitiveDetails } = response.data;
 
-        try {
-          const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
-          console.log('External user response:', response.data);
-
-          if (response.data.error) {
-            console.log('Error: ', response.data.error);
-            setError(response.data.error);  // Set error message
-            navigate('/request-emergency-access', { state: { userId } });
-          } else {
-            const { emergencyContactApproved, sensitiveDetails } = response.data;
-
-            if (emergencyContactApproved) {
-              console.log('Emergency contact approved. Showing sensitive details...');
-              setAllergies(sensitiveDetails.allergies);
-              setDiseases(sensitiveDetails.diseases);
-              setMedicalReports(sensitiveDetails.medicalReports);
-            } else {
-              console.log('Emergency contact not approved. Redirecting to request access page...');
-              setError('Access not approved. Please request emergency access.');  // Set error message
-              navigate('/request-emergency-access', { state: { userId } });
-            }
-          }
-        } catch (error) {
-          console.error('Error checking external user access:', error);
-          setError('Error checking access status.');  // Set error message
+        if (emergencyContactApproved) {
+          setAllergies(sensitiveDetails.allergies);
+          setDiseases(sensitiveDetails.diseases);
+          setMedicalReports(sensitiveDetails.medicalReports);
+        } else {
+          setError('Access not approved. Please request emergency access.');
+          navigate('/request-emergency-access', { state: { userId } });
         }
       } else {
-        console.log('No token and no userId found. Redirecting to request access page...');
         navigate('/request-emergency-access');
       }
     };
@@ -91,18 +70,44 @@ const SensitiveDetailsPage = () => {
     fetchSensitiveDetails();
   }, [token, userId, navigate]);
 
+  // Handle file upload for medical reports
+  const handleMedicalReportsUpload = async (e) => {
+    const files = e.target.files;
+    const formData = new FormData();
+
+    // Append each file to the form data
+    Array.from(files).forEach(file => {
+      formData.append('medicalReports', file);
+    });
+
+    try {
+      const response = await axios.post(
+        'https://invota-backend-production.up.railway.app/api/auth/upload-medical-reports',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log('Medical reports upload response:', response);  // Log the response to debug
+      setMedicalReports(response.data.fileUrls); // Set returned file URLs
+    } catch (error) {
+      setError('Failed to upload medical reports.');
+      console.error('Error uploading medical reports:', error);  // Log the error
+    }
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
 
     if (!token) {
-      console.log('No token found. Redirecting to request access...');
       navigate('/request-emergency-access');
       return;
     }
 
     try {
-      console.log('Sending request to update sensitive details...');
-      
       const response = await axios.put(
         'https://invota-backend-production.up.railway.app/api/auth/update-sensitive-details',
         {
@@ -114,12 +119,11 @@ const SensitiveDetailsPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
-      console.log('Update successful:', response.data);
+      console.log('Update response:', response);  // Log the response to debug
       navigate('/view-basic-details');
     } catch (error) {
-      console.error('Error updating sensitive details:', error.response?.data || error);
-      setError('Failed to update sensitive details');  // Set error message
+      setError('Failed to update sensitive details');
+      console.error('Error updating sensitive details:', error);  // Log the error
     }
   };
 
@@ -127,7 +131,7 @@ const SensitiveDetailsPage = () => {
     <div className="view-details-container">
       <div className="glassy-container">
         <h2 className="text-center text-white mb-4">Update Sensitive Details</h2>
-        {error && <p className="error-message text-center text-danger">{error}</p>}  {/* Display error message */}
+        {error && <p className="error-message text-center text-danger">{error}</p>}
         <form onSubmit={handleUpdate}>
           <div className="form-group mb-3">
             <label htmlFor="allergies" className="text-white">Allergies:</label>
@@ -154,15 +158,27 @@ const SensitiveDetailsPage = () => {
           </div>
 
           <div className="form-group mb-3">
-            <label htmlFor="medicalReports" className="text-white">Medical Reports:</label>
+            <label htmlFor="medicalReports" className="text-white">Upload Medical Reports:</label>
             <input
-              type="text"
+              type="file"
               id="medicalReports"
               name="medicalReports"
               className="form-control"
-              value={medicalReports}
-              onChange={(e) => setMedicalReports(e.target.value)}
+              multiple
+              onChange={handleMedicalReportsUpload}
             />
+            {medicalReports.length > 0 && (
+              <div className="mt-2">
+                <h6>Uploaded Reports:</h6>
+                <ul>
+                  {medicalReports.map((url, index) => (
+                    <li key={index}>
+                      <a href={url} target="_blank" rel="noopener noreferrer">Report {index + 1}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <button type="submit" className="btn btn-primary w-100">Update Sensitive Details</button>

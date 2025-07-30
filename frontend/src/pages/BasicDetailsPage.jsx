@@ -9,7 +9,7 @@ const BasicDetailsPage = () => {
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
-  const [photo, setPhoto] = useState('');
+  const [photo, setPhoto] = useState(null);  // Store file object
   const [emergencyContactEmail, setEmergencyContactEmail] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);  // Loading state
@@ -19,7 +19,6 @@ const BasicDetailsPage = () => {
   useEffect(() => {
     if (token) {
       const decoded = jwtDecode(token);  // Decode the token
-      console.log('Decoded token:', decoded); // Log the decoded token (optional for debugging)
 
       // Ensure the user is logged in and the token is not expired
       const currentTime = Date.now() / 1000; // Current time in seconds
@@ -50,20 +49,22 @@ const BasicDetailsPage = () => {
 
     setIsLoading(true);  // Start loading state
 
+    const formData = new FormData();
+    formData.append('fullName', fullName);
+    formData.append('address', address);
+    formData.append('phoneNumber', phoneNumber);
+    formData.append('bloodGroup', bloodGroup);
+    formData.append('emergencyContactEmail', emergencyContactEmail);
+    formData.append('photo', photo);  // Append the photo file
+
     try {
       // Sending the updated details, including emergencyContactEmail, to the backend
       const response = await axios.put(
         'https://invota-backend-production.up.railway.app/api/auth/update-basic-details',
-        {
-          fullName,
-          address,
-          phoneNumber,
-          bloodGroup,
-          photo,
-          emergencyContactEmail,  // Send emergency contact email
-        },
+        formData,
         {
           headers: {
+            'Content-Type': 'multipart/form-data',  // Important for file uploads
             Authorization: `Bearer ${token}`,  // Send token for authentication
           },
         }
@@ -143,14 +144,13 @@ const BasicDetailsPage = () => {
           </div>
 
           <div className="form-group mb-3">
-            <label htmlFor="photo" className="text-white">Photo URL:</label>
+            <label htmlFor="photo" className="text-white">Upload Photo:</label>
             <input
-              type="text"
+              type="file"
               id="photo"
               name="photo"
               className="form-control"
-              value={photo}
-              onChange={(e) => setPhoto(e.target.value)}
+              onChange={(e) => setPhoto(e.target.files[0])}  // Store the selected file
               required
             />
           </div>
