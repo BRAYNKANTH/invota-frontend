@@ -162,7 +162,7 @@ const SensitiveDetailsPage = () => {
         <li key={index}>
           {/* Render the clickable link for each medical report */}
           <a 
-            href={`https://invota-backend-production.up.railway.appd${file}`}  // Assuming `file` contains the relative path to the file
+            href={`https://invota-backend-production.up.railway.app${file}`}  // Assuming `file` contains the relative path to the file
             target="_blank" 
             rel="noopener noreferrer">
             Report {index + 1}
