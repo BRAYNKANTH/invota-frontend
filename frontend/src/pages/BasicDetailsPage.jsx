@@ -10,6 +10,9 @@ const BasicDetailsPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
   const [emergencyContactEmail, setEmergencyContactEmail] = useState('');
+  const [emergencyContactNumber, setEmergencyContactNumber] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);  // Loading state
   const navigate = useNavigate();
@@ -34,7 +37,7 @@ const BasicDetailsPage = () => {
     e.preventDefault();
 
     // Ensure that all fields are filled before proceeding
-    if (!fullName || !address || !phoneNumber || !bloodGroup  || !emergencyContactEmail) {
+    if (!fullName || !address || !phoneNumber || !bloodGroup || !emergencyContactEmail || !emergencyContactNumber || !age || !gender) {
       setError('All fields are required.');
       return;
     }
@@ -54,10 +57,12 @@ const BasicDetailsPage = () => {
     formData.append('phoneNumber', phoneNumber);
     formData.append('bloodGroup', bloodGroup);
     formData.append('emergencyContactEmail', emergencyContactEmail);
-    
+    formData.append('emergencyContactNumber', emergencyContactNumber); // Added emergency contact number
+    formData.append('age', age); // Added age
+    formData.append('gender', gender); // Added gender
 
     try {
-      // Sending the updated details, including emergencyContactEmail, to the backend
+      // Sending the updated details, including new fields, to the backend
       const response = await axios.put(
         'https://invota-backend-production.up.railway.app/api/auth/update-basic-details',
         formData,
@@ -85,7 +90,7 @@ const BasicDetailsPage = () => {
       <div className="glassy-container">
         <h2 className="text-center text-white mb-4">Update Basic Details</h2>
         {error && <p className="error-message text-center text-danger">{error}</p>}
-        
+
         {/* Show loading spinner if in loading state */}
         {isLoading && <div className="text-center">Loading...</div>}
 
@@ -142,8 +147,6 @@ const BasicDetailsPage = () => {
             />
           </div>
 
-          
-
           <div className="form-group mb-3">
             <label htmlFor="emergencyContactEmail" className="text-white">Emergency Contact Email:</label>
             <input
@@ -155,6 +158,49 @@ const BasicDetailsPage = () => {
               onChange={(e) => setEmergencyContactEmail(e.target.value)}
               required
             />
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="emergencyContactNumber" className="text-white">Emergency Contact Number:</label>
+            <input
+              type="text"
+              id="emergencyContactNumber"
+              name="emergencyContactNumber"
+              className="form-control"
+              value={emergencyContactNumber}
+              onChange={(e) => setEmergencyContactNumber(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="age" className="text-white">Age:</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              className="form-control"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="gender" className="text-white">Gender:</label>
+            <select
+              id="gender"
+              name="gender"
+              className="form-control"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
 
           <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
