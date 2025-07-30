@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './RequestEmergencyAccessPage.css';  // Custom CSS for this page
 
@@ -10,11 +10,11 @@ const RequestEmergencyAccessPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Retrieve userId from location state passed via navigate
+  // Ensure the userId is correctly passed from the previous page
   const userId = location.state?.userId;
+  console.log('Received userId:', userId);  // Debug log
 
   useEffect(() => {
-    // Check if userId is available; otherwise, navigate to landing page
     if (!userId) {
       setError('User ID is missing');
       console.log('Error: User ID is missing');
@@ -33,16 +33,16 @@ const RequestEmergencyAccessPage = () => {
       return;
     }
 
-    console.log('Sending request with userId:', userId); 
+    console.log('Sending request with userId:', userId);
 
     try {
       const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/request-emergency-access', { userId });
-      console.log('Response from request-emergency-access:', response); 
+      console.log('Response from request-emergency-access:', response);
 
       if (response.status === 200) {
         setAccessStatus('Access request sent to the emergency contact. They will receive a link to verify access.');
         console.log('Access request sent successfully');
-        setChecking(true); 
+        setChecking(true);
       }
     } catch (error) {
       console.error('Error while requesting emergency access:', error);
@@ -60,7 +60,7 @@ const RequestEmergencyAccessPage = () => {
         console.log('Response from check-access:', response);
 
         if (response.status === 200 && response.data.accessGranted) {
-          clearInterval(interval); 
+          clearInterval(interval);
           setAccessStatus('Access granted! Redirecting...');
           console.log('Access granted, redirecting to sensitive details...');
           setTimeout(() => navigate(`/view-sensitive-details/${userId}`), 2000);
@@ -68,7 +68,7 @@ const RequestEmergencyAccessPage = () => {
       } catch (err) {
         console.log("Access not granted yet or expired", err);
       }
-    }, 5000); 
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [checking, userId, navigate]);
