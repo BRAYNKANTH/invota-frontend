@@ -54,10 +54,15 @@ const ViewSensitiveDetailsPage = () => {
           console.error('Error fetching sensitive details:', error);
           setError('Failed to fetch sensitive details.');
         }
-      } else if (userId) {
-        // Handle external user (no token, but userId is provided)
+      } 
+      // Handle external user (no token, but userId is provided)
+      else if (userId) {
+        console.log('No token found. Checking for external user with userId:', userId);
+
         try {
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
+          console.log('External user response:', response.data);
+
           if (response.data.error) {
             setError(response.data.error);
             navigate('/request-emergency-access', { state: { userId } });
