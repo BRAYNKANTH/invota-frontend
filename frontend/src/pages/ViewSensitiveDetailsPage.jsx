@@ -10,13 +10,14 @@ const ViewSensitiveDetailsPage = () => {
   const [medicalReports, setMedicalReports] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem('authToken');  // Token from localStorage
   const userId = new URLSearchParams(window.location.search).get('userId');  // For external users
 
   useEffect(() => {
     const fetchSensitiveDetails = async () => {
       console.log('Fetching sensitive details...');
 
+      // If the user is logged in (token exists)
       if (token) {
         console.log('Token found. Validating...');
         try {
@@ -32,19 +33,29 @@ const ViewSensitiveDetailsPage = () => {
             return;
           }
 
+          // Fetch sensitive details for logged-in user
           const response = await axios.get('https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details', {
             headers: { Authorization: `Bearer ${token}` },
           });
+
           console.log('Fetched sensitive details for logged-in user:', response.data);
-          setAllergies(response.data.sensitiveDetails.allergies);
-          setDiseases(response.data.sensitiveDetails.diseases);
-          setMedicalReports(response.data.sensitiveDetails.medicalReports);
+          const { sensitiveDetails, emergencyContactApproved } = response.data;
+
+          // Check if emergency contact is approved
+          if (emergencyContactApproved) {
+            setAllergies(sensitiveDetails.allergies);
+            setDiseases(sensitiveDetails.diseases);
+            setMedicalReports(sensitiveDetails.medicalReports);
+          } else {
+            setError('Emergency contact not approved. Please request access.');
+            navigate('/request-emergency-access');  // Redirect to the request access page
+          }
         } catch (error) {
           console.error('Error fetching sensitive details:', error);
           setError('Failed to fetch sensitive details.');
         }
       } else if (userId) {
-        // Handle external user
+        // Handle external user (no token, but userId is provided)
         try {
           const response = await axios.get(`https://invota-backend-production.up.railway.app/api/auth/get-sensitive-details?userId=${userId}`);
           if (response.data.error) {
@@ -52,20 +63,24 @@ const ViewSensitiveDetailsPage = () => {
             navigate('/request-emergency-access', { state: { userId } });
           } else {
             const { emergencyContactApproved, sensitiveDetails } = response.data;
+
+            // If emergency contact is approved, show sensitive details
             if (emergencyContactApproved) {
               setAllergies(sensitiveDetails.allergies);
               setDiseases(sensitiveDetails.diseases);
               setMedicalReports(sensitiveDetails.medicalReports);
             } else {
-              setError('Access not approved. Please request emergency access.');
-              navigate('/request-emergency-access', { state: { userId } });
+              setError('Emergency contact not approved. Please request access.');
+              navigate('/request-emergency-access', { state: { userId } });  // Redirect to request access
             }
           }
         } catch (error) {
           console.error('Error checking external user access:', error);
           setError('Error checking access status.');
+          navigate('/request-emergency-access');  // Redirect if any error occurs
         }
       } else {
+        // If no token or userId, redirect to request access page
         navigate('/request-emergency-access');
       }
     };
