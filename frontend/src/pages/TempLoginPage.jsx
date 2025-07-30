@@ -6,18 +6,33 @@ import './TempLoginPage.css'; // Import custom CSS
 const TempLoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    if (!username || !password) {
+      setError('Please fill in both fields');
+      return;
+    }
+
     try {
-      const response = await axios.post('https://invota-backend-production.up.railway.app/api/auth/temp-login', { username, password });
-      localStorage.setItem('token', response.data.token); // Store JWT token in localStorage
-      navigate('/account-update'); // Redirect to the account update page
+      // Make a POST request to the backend for temporary login
+      const response = await axios.post(
+        'https://invota-backend-production.up.railway.app/api/auth/temp-login', 
+        { username, password }
+      );
+
+      if (response.status === 200 && response.data.token) {
+        // Store the token in localStorage
+        localStorage.setItem('token', response.data.token);
+        navigate('/account-update'); // Redirect to account update page
+      }
     } catch (error) {
-      console.error('Error during temp login:', error);
-      alert('Invalid credentials');
+      console.error('Login error:', error);
+      setError(error.response?.data?.error || 'Invalid credentials');
     }
   };
 
@@ -42,6 +57,7 @@ const TempLoginPage = () => {
           />
           <button type="submit" className="btn-login">Login</button>
         </form>
+        {error && <p className="error-message">{error}</p>}
       </div>
     </div>
   );
