@@ -87,10 +87,27 @@ const ViewBasicDetailsPage = () => {
     <div className="view-details-container">
       <div className="glassy-container">
         <h2 className="text-center text-white mb-4">Public Details</h2>
-        <p><strong>Full Name:</strong> {publicDetails.fullName}</p>
-        <p><strong>Address:</strong> {publicDetails.address}</p>
-        <p><strong>Phone Number:</strong> {publicDetails.phoneNumber}</p>
-        <p><strong>Blood Group:</strong> {publicDetails.bloodGroup}</p>
+        {/* Table for displaying public details */}
+        <table className="table table-bordered table-striped">
+          <tbody>
+            <tr>
+              <td><strong>Full Name:</strong></td>
+              <td>{publicDetails.fullName}</td>
+            </tr>
+            <tr>
+              <td><strong>Address:</strong></td>
+              <td>{publicDetails.address}</td>
+            </tr>
+            <tr>
+              <td><strong>Phone Number:</strong></td>
+              <td>{publicDetails.phoneNumber}</td>
+            </tr>
+            <tr>
+              <td><strong>Blood Group:</strong></td>
+              <td>{publicDetails.bloodGroup}</td>
+            </tr>
+          </tbody>
+        </table>
         <img src={publicDetails.photo} alt="Profile" className="img-fluid mb-3" />
         <div className="text-center mt-4">
           <button onClick={handleViewSensitiveDetails} className="btn btn-primary btn-lg">
